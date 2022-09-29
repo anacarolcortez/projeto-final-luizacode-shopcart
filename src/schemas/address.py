@@ -1,73 +1,31 @@
-from typing import List
+from typing import Optional
 from pydantic import BaseModel, Field
 from bson import ObjectId
 
 
-from src.schemas.user import UserSchema
-
-
-class Address(BaseModel):
-    street: str
-    zipcode: str
-    district: str
-    city: str
-    state: str
-    is_delivery: bool = Field(default=True)
-    
-    class Config:
-        arbitrary_types_allowed = True
-        json_encoders = {ObjectId: str}
-        schema_extra = {
-            "example": {
-                    "address" : [
-                        {
-                            "street": "Tree Fort",
-                            "zipcode": "01020-030",
-                            "district": "Grass Lands",
-                            "city": "Land of Ooo",
-                            "state": "Parallel Universe", 
-                            "is_delivery": True
-                        }
-                    ]
-            }
-        }
-
-
-
 class AddressSchema(BaseModel):
-    user: UserSchema
-    address: List[Address] = []
+    zipcode: str = Field(max_length=8, unique=True, index=True)
+    street: str = Field(max_length=100)
+    city: str = Field(max_length=20)
+    state: str = Field(max_length=20)
     
-
     class Config:
-        arbitrary_types_allowed = True
+        arbitrary_types_allowed = False
         json_encoders = {ObjectId: str}
         schema_extra = {
             "example": {
-                  "user": {
-                        "name": "Finn The Human",
-                        "email": "herofinn@adventuretime.com",
-                        "password": "dieLich!",
-                        "is_active": True,
-                        "is_admin": False
-                    },
                     "address" : [
                         {
+                            "zipcode": "01021030",
                             "street": "Tree Fort",
-                            "zipcode": "01020-030",
-                            "district": "Grass Lands",
-                            "city": "Land of Ooo",
-                            "state": "Parallel Universe", 
-                            "is_delivery": True
-                        },
-                        {
-                            "street": "Candy Castle",
-                            "zipcode": "01020-040",
-                            "district": "Candy Kingdom",
-                            "city": "Land of Ooo",
-                            "state": "Parallel Universe", 
-                            "is_delivery": False
+                            "city": "City of Grass",
+                            "state": "Land of Ooo"
                         }
                     ]
             }
         }
+        
+class AdressComplement(BaseModel):
+    street_number: int = Field(max_length=6)
+    complement: Optional[str] = Field(max_length=20)
+    is_delivery: bool = Field(default=True)
