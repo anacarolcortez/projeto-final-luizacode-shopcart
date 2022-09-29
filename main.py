@@ -1,14 +1,12 @@
 import uvicorn
 from fastapi import FastAPI
-from src.controllers import users
+from src.controllers import address, users
 
 app = FastAPI()
 app.include_router(users.router)
-# app.include_router(products.router)
-# app.include_router(user_address.router)
-# app.include_router(address.router)
-# app.include_router(orders.router)
-# app.include_router(order_item.router)
+app.include_router(address.router)
+# app.include_router(delivery.router)
+
 
 
 if __name__ == '__main__':

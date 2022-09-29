@@ -1,0 +1,25 @@
+POST http://127.0.0.1:8000/address/ HTTP/1.1
+content-type: application/json
+
+{
+    "zipcode": "01021040",
+    "street": "Tree Fort",
+    "city": "City of Grass",
+    "state": "Land of Ooo"
+}
+
+
+###########################################
+###Consultar todos os endereços
+
+GET http://127.0.0.1:8000/address/ HTTP/1.1
+content-type: application/json
+
+
+###########################################
+###Consultar pelo zipcode
+
+GET http://127.0.0.1:8000/address/{zipcode} HTTP/1.1
+content-type: application/json
+
+
