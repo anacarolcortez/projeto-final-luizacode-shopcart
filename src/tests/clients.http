@@ -2,9 +2,9 @@ POST http://127.0.0.1:8000/clients/ HTTP/1.1
 content-type: application/json
 
 {
-    "name": "Drogon Targaryen", 
-    "email": "drogon@dracarys.com",
-    "cpf": "44567891810"
+    "name": "Finn The Human", 
+    "email": "finn@adventuretime.com",
+    "cpf": "123654789"
 }
 
 

@@ -14,7 +14,7 @@ clients_collection = db.clients_collection
 address_collection = db.address_collection
 
 
-@router.post("/")
+@router.post("/{email}/{zipcode}")
 async def post_delivery_address(email: str, zipcode:str, address: AdressComplementSchema):
     return await create_user_delivery_address(
         delivery_collection,

@@ -2,10 +2,10 @@ POST http://127.0.0.1:8000/address/ HTTP/1.1
 content-type: application/json
 
 {
-    "zipcode": "01021040",
-    "street": "Tree Fort",
-    "city": "City of Grass",
-    "state": "Land of Ooo"
+    "zipcode": "01415016",
+    "street": "Cloud Forest",
+    "city": "Cloud Kingdom",
+    "state": "Land of Ooo",
 }
 
 

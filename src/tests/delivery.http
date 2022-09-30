@@ -1,0 +1,17 @@
+POST http://127.0.0.1:8000/deliveryaddress/finn@adventuretime.com/01021040 HTTP/1.1
+content-type: application/json
+
+{
+    "street_number": 123,
+    "complement": "3rd floor",
+    "is_delivery": "false"
+}
+
+
+###########################################
+###Consultar todos os endereços
+
+GET http://127.0.0.1:8000/deliveryaddress/finn@adventuretime.com HTTP/1.1
+content-type: application/json
+
+
