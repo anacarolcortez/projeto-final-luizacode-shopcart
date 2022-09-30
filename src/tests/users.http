@@ -20,22 +20,23 @@ content-type: application/json
 ###########################################
 ###Consultar pelo ID
 
-GET http://127.0.0.1:8000/usuarios/{id} HTTP/1.1
+GET http://127.0.0.1:8000/usuarios/63375c19c2a36ce944974123 HTTP/1.1
 content-type: application/json
 
 
 ###########################################
 ###Remover usuário pelo ID
 
-DELETE http://127.0.0.1:8000/usuarios/6334ac8bcff356aed0f6ed3e HTTP/1.1
+DELETE http://127.0.0.1:8000/usuarios/63375c19c2a36ce944974123  HTTP/1.1
 content-type: application/json
 
 ##########################################
 ###Atualizar senha
 
-PATCH http://127.0.0.1:8000/usuarios/6334af0d8ad15b844edbc275 HTTP/1.1
+PATCH http://127.0.0.1:8000/usuarios/63375c19c2a36ce944974123  HTTP/1.1
 content-type: application/json
 
 {
     "password": "jakesBesty456"
 }
+

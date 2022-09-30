@@ -6,8 +6,9 @@ class ProductSchema(BaseModel):
     name: str = Field(max_length=100)
     description: str
     price: float
+    value_estoque: float
     image: str
-    code: int
+    code: str
 
     class Config:
         arbitrary_types_allowed = True
@@ -21,3 +22,8 @@ class ProductSchema(BaseModel):
                 "code": 123456789
             }
         }
+        
+class UserName(BaseModel):
+    name: str
+
+    
