@@ -1,0 +1,16 @@
+POST http://127.0.0.1:8000/clients/ HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Finn The Human", 
+    "email": "finn@adventuretime.com",
+    "cpf": "123654789"
+}
+
+
+###########################################
+###Consultar pelo email
+
+GET http://127.0.0.1:8000/clients/khaleesi@dracarys.com HTTP/1.1
+content-type: application/json
+

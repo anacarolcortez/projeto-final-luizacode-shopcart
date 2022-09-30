@@ -29,7 +29,7 @@ async def get_user_by_email(users_collection, email):
     try:
         user = await users_collection.find_one({'email': email})
         if user:
-            return user
+            return json.loads(json_util.dumps(user))
     except Exception as e:
         return f'get_user.error: {e}'
         
