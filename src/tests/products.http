@@ -1,0 +1,37 @@
+##########################################
+###Registrar produto
+POST http://127.0.0.1:8000/produtos/ HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Iron Thron",
+    "description": "forged at the order of Aegon the Conqueror, the first of the Targaryen Kings, who conquered six of the seven independent kingdoms of Westeros; made of 1.000 swords",
+    "price": 5690.9,
+    "value_estoque": 4690.9,
+    "image": "http://127.0.0.1:8000/produto/ironthrone.png",
+    "code": 123456789
+}
+
+###########################################
+###Consultar todos os produtos
+
+GET http://127.0.0.1:8000/produtos/ HTTP/1.1
+content-type: application/json
+
+###########################################
+###Consultar pelo codigo
+
+GET http://127.0.0.1:8000/produtos?code=123456789 HTTP/1.1
+content-type: application/json
+
+###########################################
+###Consultar pelo nome
+
+GET http://127.0.0.1:8000/produtos?nome=Iron Thron HTTP/1.1
+content-type: application/json
+
+###########################################
+###Remover usuário pelo código
+
+DELETE http://127.0.0.1:8000/produtos/123456789 HTTP/1.1
+content-type: application/json
