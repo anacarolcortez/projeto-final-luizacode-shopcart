@@ -30,6 +30,8 @@ async def get_delivery_address_by_email(delivery_collection, email):
         delivery = await delivery_collection.find_one({'client.email': email})
         if delivery:
             return json.loads(json_util.dumps(delivery))
+        else:
+            raise Exception("Não há endereços associados ao e-mail informado")
     except Exception as e:
         return f'get_delivery_address_by_email.error: {e}'
 
