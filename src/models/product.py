@@ -52,12 +52,12 @@ async def get_products(products_collection, skip, limit):
         return f'get_products.error: {e}'
 
 
-async def update_product(products_collection, product_id, pwd):
-    data = jsonable_encoder(pwd)
+async def update_product(products_collection, code, nam):
+    data = jsonable_encoder(nam)
     try:
         product = await products_collection.update_one(
-            {'_id': ObjectId(product_id)},
-            {'$set': {'password': data['password']}}
+            {'code': code},
+            {'$set': {'name': data['name']}}
         )
         if product.modified_count:
             return True, product.modified_count
@@ -72,6 +72,6 @@ async def delete_product(products_collection, code):
             {'code': code}
         )
         if product.deleted_count:
-            return {'status': 'User deleted'}
+            return {'status': 'Product deleted'}
     except Exception as e:
-        return f'delete_user.error: {e}'
+        return f'delete_product.error: {e}'
