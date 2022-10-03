@@ -5,11 +5,10 @@ from fastapi.testclient import TestClient
 
 from main import app
 from src.controllers import clients
-from src.server.database import db
 
 test_app = TestClient(app)
 PREFIX = clients.router.prefix
-clients_collection = db.clients_collection
+clients_collection = clients.clients_collection
 
 
 #Setting Test Environment
@@ -34,4 +33,3 @@ async def test_create_client_correctly(clear_collection):
     
     dummyclient_data = response.json()
     assert dummyclient['name'] in dummyclient_data
-    assert dummyclient_data.name is not None
