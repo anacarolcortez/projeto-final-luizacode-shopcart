@@ -11,7 +11,7 @@ router = APIRouter(prefix="/address")
 address_collection = db.address_collection
 
 
-@router.post("/")
+@router.post("/", tags=["address"])
 async def post_address(address: AddressSchema):
     return await create_address(
         address_collection,
@@ -19,7 +19,7 @@ async def post_address(address: AddressSchema):
     )
 
 
-@router.get("/{zipcode}")
+@router.get("/{zipcode}", tags=["address"])
 async def get_address(zipcode: str):
     return await get_address_by_zipcode(
         address_collection,
@@ -27,7 +27,7 @@ async def get_address(zipcode: str):
     )
 
 
-@router.get("/")
+@router.get("/", tags=["address"])
 async def get_all_address():
     return await get_addresses(
         address_collection,

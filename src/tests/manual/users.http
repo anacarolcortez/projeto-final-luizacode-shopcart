@@ -1,4 +1,4 @@
-POST http://127.0.0.1:8000/usuarios/ HTTP/1.1
+POST http://127.0.0.1:8000/users/ HTTP/1.1
 content-type: application/json
 
 {
@@ -13,27 +13,27 @@ content-type: application/json
 ###########################################
 ###Consultar todos os usuários (pegar ID)
 
-GET http://127.0.0.1:8000/usuarios/ HTTP/1.1
+GET http://127.0.0.1:8000/users/ HTTP/1.1
 content-type: application/json
 
 
 ###########################################
 ###Consultar pelo ID
 
-GET http://127.0.0.1:8000/usuarios/63375c19c2a36ce944974123 HTTP/1.1
+GET http://127.0.0.1:8000/users/63375c19c2a36ce944974123 HTTP/1.1
 content-type: application/json
 
 
 ###########################################
 ###Remover usuário pelo ID
 
-DELETE http://127.0.0.1:8000/usuarios/63375c19c2a36ce944974123  HTTP/1.1
+DELETE http://127.0.0.1:8000/users/63375c19c2a36ce944974123  HTTP/1.1
 content-type: application/json
 
 ##########################################
 ###Atualizar senha
 
-PATCH http://127.0.0.1:8000/usuarios/63375c19c2a36ce944974123  HTTP/1.1
+PATCH http://127.0.0.1:8000/users/63375c19c2a36ce944974123  HTTP/1.1
 content-type: application/json
 
 {

@@ -1,9 +1,9 @@
-POST http://127.0.0.1:8000/deliveryaddress/finn@adventuretime.com/01021040 HTTP/1.1
+POST http://127.0.0.1:8000/deliveryaddress/finn@adventuretime.com/01415016 HTTP/1.1
 content-type: application/json
 
 {
-    "street_number": 123,
-    "complement": "3rd floor",
+    "street_number": 1236,
+    "complement": "2nd cave",
     "is_delivery": "false"
 }
 
