@@ -7,7 +7,7 @@ from bson import ObjectId
 class ClientSchema(BaseModel):
     name: str = Field(max_length=100)
     email: EmailStr = Field(unique=True, index=True)
-    cpf: str = Field(max_length=11)
+    cpf: str = Field(min_length=11, max_length=11)
     user_id: Optional[str]
 
     class Config:
