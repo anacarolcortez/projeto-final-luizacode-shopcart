@@ -9,37 +9,37 @@ from fastapi import APIRouter
 from src.schemas.product import ProductSchema, UserName
 from src.server.database import db
 
-router = APIRouter(prefix="/produtos")
+router = APIRouter(prefix="/products")
 products_collection = db.products_collection
 
 
-@router.post("/")
+@router.post("/", tags=["products"])
 async def post_product(product: ProductSchema):
     return await create_product(
         products_collection,
         product
     )
 
-@router.get("/{code}")
+@router.get("/{code}", tags=["products"])
 async def get_product_by_code(code: str):
     return await get_product(
         products_collection,
         code
     )
 
-@router.get("/{name}")
+@router.get("/{name}", tags=["products"])
 async def get_product_by_name(name: str):
     return await get_product(
         products_collection,
         name
     )
 
-@router.patch("/{id}")
-async def patch_product_email(id: str, password: UserName):
+@router.patch("/{code}", tags=["products"])
+async def patch_product_email(code: str, name: UserName):
     is_updated, numbers_updated = await update_product(
         products_collection,
-        id,
-        password
+        code,
+        name
     )
     if is_updated:
         return f"Atualização realizada com sucesso, número de documentos alterados {numbers_updated}"
@@ -47,7 +47,7 @@ async def patch_product_email(id: str, password: UserName):
         return "Atualização falhou!"
 
 
-@router.delete("/{code}")
+@router.delete("/{code}", tags=["products"])
 async def delete_product_by_id(code: str):
     return await delete_product(
         products_collection,
@@ -55,7 +55,7 @@ async def delete_product_by_id(code: str):
     )
 
 
-@router.get("/")
+@router.get("/", tags=["products"])
 async def get_all_products():
     return await get_products(
         products_collection,
