@@ -14,7 +14,7 @@ clients_collection = db.clients_collection
 address_collection = db.address_collection
 
 
-@router.post("/{email}/{zipcode}")
+@router.post("/{email}/{zipcode}", tags=["delivery"])
 async def post_delivery_address(email: str, zipcode:str, address: AdressComplementSchema):
     return await create_user_delivery_address(
         delivery_collection,
@@ -26,7 +26,7 @@ async def post_delivery_address(email: str, zipcode:str, address: AdressCompleme
     )
 
 
-@router.get("/{email}")
+@router.get("/{email}", tags=["delivery"])
 async def get_delivery_address(email: str):
     return await get_delivery_address_by_email(
         delivery_collection,
@@ -34,7 +34,7 @@ async def get_delivery_address(email: str):
     )
 
 
-@router.delete("/{zipcode}/client/{email}")
+@router.delete("/{zipcode}/client/{email}", tags=["delivery"])
 async def delete_delivery_address(zipcode: str, email: str):
     return await delete_delivery_address_by_zipcode(
         delivery_collection,

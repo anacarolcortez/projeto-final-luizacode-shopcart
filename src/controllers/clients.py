@@ -10,7 +10,7 @@ router = APIRouter(prefix="/clients")
 clients_collection = db.clients_collection
 
 
-@router.post("/")
+@router.post("/", tags=["clients"])
 async def post_client(client: ClientSchema):
     return await create_client(
         clients_collection,
@@ -18,7 +18,7 @@ async def post_client(client: ClientSchema):
     )
 
 
-@router.get("/{email}")
+@router.get("/{email}", tags=["clients"])
 async def get_client(email: str):
     return await get_client_by_email(
         clients_collection,

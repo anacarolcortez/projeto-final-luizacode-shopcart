@@ -9,11 +9,11 @@ from fastapi import APIRouter
 from src.schemas.user import UserSchema, UserPassword
 from src.server.database import db
 
-router = APIRouter(prefix="/usuarios")
+router = APIRouter(prefix="/users")
 users_collection = db.users_collection
 
 
-@router.post("/")
+@router.post("/", tags=["users"])
 async def post_user(user: UserSchema):
     return await create_user(
         users_collection,
@@ -21,7 +21,7 @@ async def post_user(user: UserSchema):
     )
 
 
-@router.get("/{id}")
+@router.get("/{id}", tags=["users"])
 async def get_user_by_id(id: str):
     return await get_user(
         users_collection,
@@ -29,7 +29,7 @@ async def get_user_by_id(id: str):
     )
 
 
-@router.patch("/{id}")
+@router.patch("/{id}", tags=["users"])
 async def patch_user_email(id: str, password: UserPassword):
     is_updated, numbers_updated = await update_user(
         users_collection,
@@ -42,7 +42,7 @@ async def patch_user_email(id: str, password: UserPassword):
         return "Atualização falhou!"
 
 
-@router.delete("/{id}")
+@router.delete("/{id}", tags=["users"])
 async def delete_user_by_id(id: str):
     return await delete_user(
         users_collection,
@@ -50,7 +50,7 @@ async def delete_user_by_id(id: str):
     )
 
 
-@router.get("/")
+@router.get("/", tags=["users"])
 async def get_all_users():
     return await get_users(
         users_collection,

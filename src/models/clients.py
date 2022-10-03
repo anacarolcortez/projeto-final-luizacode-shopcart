@@ -16,8 +16,11 @@ async def create_client(clients_collection, client):
                 data = await clients_collection.insert_one(jsonable_encoder(client))
                 if data.inserted_id:
                     return await get_client_by_id(clients_collection, data.inserted_id)
+                else:
+                    raise Exception("Erro ao cadastrar cliente")
             else:
-                raise Exception("Texto que antecede o @ precisa ter acima de 3 caracteres")
+                raise Exception(
+                    "Texto que antecede o @ precisa ter acima de 3 caracteres")
     except Exception as e:
         return f'create_client.error: {e}'
 
@@ -41,7 +44,7 @@ async def get_client_by_email(clients_collection, email):
 
 
 async def validate_email(email):
-    #the attribute is set as "Emailstr" in Clients Schema, which validates email syntax
+    # the attribute is set as "Emailstr" in Clients Schema, which validates email syntax
     user_email = email.split("@")[0]
     if len(user_email) >= 3:
         return True
