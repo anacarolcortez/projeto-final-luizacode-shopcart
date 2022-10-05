@@ -2,9 +2,9 @@ POST http://127.0.0.1:8000/address/ HTTP/1.1
 content-type: application/json
 
 {
-    "zipcode": "03015060",
-    "street": "Ice Castle Lake",
-    "city": "Ice Kingdom",
+    "zipcode": "05406180",
+    "street": "Cotton Candy Mount",
+    "city": "Cotton Candy Land",
     "state": "Land of Ooo"
 }
 
@@ -19,7 +19,7 @@ content-type: application/json
 ###########################################
 ###Consultar pelo zipcode
 
-GET http://127.0.0.1:8000/address/{zipcode} HTTP/1.1
+GET http://127.0.0.1:8000/address/2123131515 HTTP/1.1
 content-type: application/json
 
 
