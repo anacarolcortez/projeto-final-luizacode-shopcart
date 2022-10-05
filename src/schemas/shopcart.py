@@ -10,7 +10,7 @@ class ShopcartSchema(BaseModel):
     client: ClientSchema
     products: List[ProductSchema]
     is_open: bool = Field(default=True)
-    quantity_cart: int
+    quantity_cart: Optional[int]
     value: Optional[float] = Field(default=0.0)
 
 
