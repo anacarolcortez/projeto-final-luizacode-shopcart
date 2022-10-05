@@ -11,7 +11,7 @@ clients_collection = db.clients_collection
 products_collection = db.products_collection
 
 @router.post("/", tags=["shopcarts"])
-async def post_shopcart(shopcart:NewshopcartSchema, email: str, code:str = None):
+async def post_shopcart(shopcart:NewshopcartSchema, email: str, code:str):
     return await create_shopcart(
         shopcarts_collection,
         clients_collection,
