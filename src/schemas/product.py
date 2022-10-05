@@ -1,3 +1,4 @@
+from enum import unique
 from pydantic import BaseModel, Field
 from bson import ObjectId
 
@@ -14,7 +15,7 @@ class ProductSchema(BaseModel):
     price: float
     quantity: int
     image: str
-    code: str
+    code: str = Field(unique=True)
     attributes: AttributesSchema
 
     class Config:
