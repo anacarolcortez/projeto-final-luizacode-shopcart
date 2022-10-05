@@ -2,9 +2,9 @@ POST http://127.0.0.1:8000/clients/ HTTP/1.1
 content-type: application/json
 
 {
-    "name": "Marceline", 
-    "email": "marceline@adventuretime.com",
-    "cpf": "25814736912"
+    "name": "Jake The Dog", 
+    "email": "jake@adventuretime.com",
+    "cpf": "12345678910"
 }
 
 
@@ -14,3 +14,9 @@ content-type: application/json
 GET http://127.0.0.1:8000/clients/finn@adventuretime.com HTTP/1.1
 content-type: application/json
 
+
+###########################################
+###Listar todos os clientes
+
+GET http://127.0.0.1:8000/clients/ HTTP/1.1
+content-type: application/json
