@@ -7,7 +7,7 @@ from src.models.clients import get_client_by_email
 from src.models.product import get_product_by_code
 from src.schemas.shopcart import ShopcartSchema
 from fastapi.encoders import jsonable_encoder
-from src.services.shopcart import find_cart_by_email, find_opened_cart, insert_cart, update_cart, update_opened_cart
+from src.services.shopcart import find_opened_cart, insert_cart, update_opened_cart
 
 
 async def create_shopcart(shopcarts_collection, clients_collection, products_collection, shopcart, email, code):
@@ -36,15 +36,23 @@ async def create_shopcart(shopcarts_collection, clients_collection, products_col
                 return response
             raise Exception("Erro ao criar carrinho de compras")
         else:
-            response = await update_opened_cart(shopcarts_collection, product)
-            # Chamar funções de atualização de valor do carrinho e quantidade de produtos do carrinho
-            if response is not None:
-                return response
-            raise Exception("Erro ao atualizar carrinho de compras")
+            return await update_cart(shopcarts_collection, email, client_data, cart)
     except Exception as e:
         return f'create_shopcart.error: {e}'
 
-    ...
+async def update_cart(shopcarts_collection, email, client_data, cart):
+    shopcart_data = ShopcartSchema(
+                    client = client_data,
+                    products = [product],
+                    is_open = True,
+                    quantity_cart = quantity_cart(cart.quantity_cart, product.quantity),
+                    value = value_cart(product.quantity, product.price, cart.value)
+                )
+    response = await update_opened_cart(shopcarts_collection, email, shopcart_data)
+    # Chamar funções de atualização de valor do carrinho e quantidade de produtos do carrinho
+    if response is not None:
+        return response
+    raise Exception("Erro ao atualizar carrinho de compras")
 
 # criar função de consulta de carrinho pelo e-mail cliente(se tem carrinho aberto, adicionar os novos produtos, se não criar carrinho do zero)
 async def get_opened_cart(shopcarts_collection, email, shopcart):
