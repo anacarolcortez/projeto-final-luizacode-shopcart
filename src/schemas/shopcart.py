@@ -15,5 +15,4 @@ class ShopcartSchema(BaseModel):
 
 
 class NewshopcartSchema(BaseModel):
-    is_open: Optional[bool] = Field(default=True)
     quantity_cart: Optional[int] = Field(default=0)
