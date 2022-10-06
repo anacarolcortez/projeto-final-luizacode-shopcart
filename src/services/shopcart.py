@@ -28,3 +28,13 @@ async def find_cart_by_id(shopcarts_collection, id):
     if shopcart is not None:
         return json.loads(json_util.dumps(shopcart))
     return None
+
+
+async def find_product_in_cart(shopcarts_collection, email, code):
+    product = await shopcarts_collection.find_one(
+        {"client.email": email, 
+        "products.code": code}
+    )
+    if product is not None:
+        return True
+    return False
