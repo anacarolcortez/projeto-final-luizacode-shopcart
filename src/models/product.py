@@ -3,54 +3,49 @@ from bson import ObjectId
 from bson import json_util
 import json
 
+from src.services.product import find_one_product_by_code, insert_new_product, find_one_product_by_name, get_products_list
+
 async def create_product(products_collection, product):
     try:
-        already_exists = await get_product_by_code(products_collection, product.code)
-        if already_exists:
-            return "{'erro': 'código já cadastrado no sistema'}"
+        already_exists = await find_one_product_by_code(products_collection, product.code)
+        if already_exists is not None:
+            raise Exception("Um produto com este código já está cadastrado no sistema")
         else:
-            data = await products_collection.insert_one(jsonable_encoder(product))
-            if data.inserted_id:
-                return await get_product(products_collection, data.inserted_id)
+            return await insert_new_product(products_collection, jsonable_encoder(product))
     except Exception as e:
         return f'create_product.error: {e}'
 
 
-async def get_product(products_collection, product_id):
-    try:
-        product = await products_collection.find_one({'_id': ObjectId(product_id)})
-        if product:
-            return json.loads(json_util.dumps(product))
-    except Exception as e:
-        return f'get_product.error: {e}'
-        
-
 async def get_product_by_code(products_collection, code):
     try:
-        product = await products_collection.find_one({'code': code})
-        if product:
-            return product
+        product_code = await find_one_product_by_code(products_collection, code)
+        if product_code is not None:
+            return json.loads(json_util.dumps(product_code))
+        else:
+            raise Exception("Producto não encontrado")
     except Exception as e:
-        return f'get_product.error: {e}'
+        return f'get_product_by_code.error: {e}'  
+    
     
 async def get_product_by_name(products_collection, name):
     try:
-        product = await products_collection.find_one({'name': name})
-        if product:
-            return product
+        product_name = await find_one_product_by_name(products_collection, name)
+        if product_name is not None:
+            return json.loads(json_util.dumps(product_name))
+        else:
+            raise Exception("Producto não encontrado")
     except Exception as e:
-        return f'get_product.error: {e}'
+        return f'get_product_by_name.error: {e}'  
 
 
         
-async def get_products(products_collection, skip, limit):
+async def get_all_products(products_collection, skip, limit):
     try:
-        product_cursor = products_collection.find().skip(int(skip)).limit(int(limit))
-        products = await product_cursor.to_list(length=int(limit))
-        return json.loads(json_util.dumps(products))
+        return await get_products_list(products_collection, skip, limit)
     except Exception as e:
-        return f'get_products.error: {e}'
-
+        return f'get_all_products.error: {e}'
+    
+    
 
 async def update_product(products_collection, code, nam):
     data = jsonable_encoder(nam)
