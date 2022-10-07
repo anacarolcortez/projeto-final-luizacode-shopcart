@@ -5,49 +5,56 @@ from fastapi.encoders import jsonable_encoder
 from src.services.shopcart import find_opened_cart, find_product_in_cart, insert_cart, update_opened_cart, update_opened_cart_insert_new_product
 
 
-async def create_shopcart(shopcarts_collection, clients_collection, products_collection, email, code, new_cart):
-    try:
+async def validate_cart(shopcarts_collection, clients_collection, products_collection, email, code):
         client_data = await get_client_by_email(clients_collection, email)
-
         if client_data is None:
             raise Exception("Cliente não localizado")
-        product = await get_product_by_code(products_collection, code)
-
-        if product is None:
+        
+        product_data = await get_product_by_code(products_collection, code)
+        if product_data is None:
             raise Exception("Produto não cadastrado")
-        cart = await get_opened_cart(shopcarts_collection, email)
+        
+        cart_data = await get_opened_cart(shopcarts_collection, email)
+        return client_data, product_data, cart_data
+            
 
-        if cart is None:
+async def create_shopcart(shopcarts_collection, clients_collection, products_collection, email, code, new_cart):
+    try:
+        client_data, product_data, cart_data = await validate_cart(shopcarts_collection, clients_collection, products_collection, email, code)
+
+        if cart_data is None:
             shopcart_data = ShopcartSchema(
                 client=client_data,
-                products=[product],
+                products=[product_data],
                 is_open=True,
                 quantity_cart= new_cart.quantity_cart,
-                value=new_cart.quantity_cart * product["price"]
+                value=new_cart.quantity_cart * product_data["price"]
             )
             response = await insert_cart(shopcarts_collection, jsonable_encoder(shopcart_data))
             if response is not None:
                 return response
             raise Exception("Erro ao criar carrinho de compras")
         else:
-            return await update_cart(shopcarts_collection, email, product, cart, code, new_cart)
+            raise Exception("Já existe um carrinho aberto com este produto. Atualize o carrinho para alterar suas informações")
     except Exception as e:
         return f'create_shopcart.error: {e}'
 
 
-async def update_cart(shopcarts_collection, email, product, cart, code, new_cart):
-    has_product = await find_product_in_cart(shopcarts_collection, email, code)
+async def update_cart(shopcarts_collection, clients_collection, products_collection, email, code, new_cart):
+    client_data, product_data, cart_data = await validate_cart(shopcarts_collection, clients_collection, products_collection, email, code)
+
+    has_product = await find_product_in_cart(shopcarts_collection, client_data['email'], product_data['code'])
     if has_product:
         shopcart_data = UpdateShopcartSchema(
-            quantity_cart = get_quantity_cart(cart['quantity_cart'], new_cart.quantity_cart),
-            value = get_value_cart(new_cart.quantity_cart, product['price'], cart['value'])
+            quantity_cart = get_quantity_cart(cart_data['quantity_cart'], new_cart.quantity_cart),
+            value = get_value_cart(new_cart.quantity_cart, product_data['price'], cart_data['value'])
         )
         response = await update_opened_cart(shopcarts_collection, email, shopcart_data)
     else:
         shopcart_data = UpdateShopcartSchema(
-            products = product,
-            quantity_cart = get_quantity_cart(cart['quantity_cart'], new_cart.quantity_cart),
-            value = get_value_cart(new_cart.quantity_cart, product['price'], cart['value'])
+            products = product_data,
+            quantity_cart = get_quantity_cart(cart_data['quantity_cart'], new_cart.quantity_cart),
+            value = get_value_cart(new_cart.quantity_cart, product_data['price'], cart_data['value'])
         )
         response = await update_opened_cart_insert_new_product(shopcarts_collection, email, shopcart_data)
     if response is not None:
