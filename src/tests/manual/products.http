@@ -22,13 +22,13 @@ content-type: application/json
 ###########################################
 ###Consultar pelo codigo
 
-GET http://127.0.0.1:8000/products/code/code=123456789 HTTP/1.1
+GET http://127.0.0.1:8000/products/code/12345678102 HTTP/1.1
 content-type: application/json
 
 ###########################################
 ###Consultar produto pelo nome
 
-GET http://127.0.0.1:8000/products/name/name=Smartphone Motorola HTTP/1.1
+GET http://127.0.0.1:8000/products/name/Smartphone HTTP/1.1
 content-type: application/json
 
 ##########################################

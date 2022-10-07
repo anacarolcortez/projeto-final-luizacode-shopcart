@@ -21,14 +21,14 @@ async def post_product(product: ProductSchema):
         product
     )
 
-@router.get("/code/", tags=["products"])
+@router.get("/code/{code}", tags=["products"])
 async def get_product(code: str):
     return await get_product_by_code(
         products_collection,
         code
     )
 
-@router.get("/name/", tags=["products"])
+@router.get("/name/{name}", tags=["products"])
 async def get_product(name: str):
     return await get_product_by_name(
         products_collection,
