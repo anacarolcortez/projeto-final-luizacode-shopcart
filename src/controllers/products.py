@@ -1,9 +1,10 @@
 from src.models.product import (
     create_product,
-    get_product,
+    get_product_by_code,
+    get_product_by_name,
     update_product,
     delete_product,
-    get_products
+    get_products_list
 )
 from fastapi import APIRouter
 from src.schemas.product import ProductSchema, UserName
@@ -20,18 +21,26 @@ async def post_product(product: ProductSchema):
         product
     )
 
-@router.get("/{code}", tags=["products"])
-async def get_product_by_code(code: str):
-    return await get_product(
+@router.get("/code/", tags=["products"])
+async def get_product(code: str):
+    return await get_product_by_code(
         products_collection,
         code
     )
 
-@router.get("/{name}", tags=["products"])
-async def get_product_by_name(name: str):
-    return await get_product(
+@router.get("/name/", tags=["products"])
+async def get_product(name: str):
+    return await get_product_by_name(
         products_collection,
         name
+    )
+
+@router.get("/", tags=["products"])
+async def get_all_products():
+    return await get_products_list(
+        products_collection,
+        skip=0,
+        limit=10
     )
 
 @router.patch("/{code}", tags=["products"])
@@ -52,13 +61,4 @@ async def delete_product_by_id(code: str):
     return await delete_product(
         products_collection,
         code
-    )
-
-
-@router.get("/", tags=["products"])
-async def get_all_products():
-    return await get_products(
-        products_collection,
-        skip=0,
-        limit=10
     )

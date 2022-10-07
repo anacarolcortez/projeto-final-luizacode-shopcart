@@ -4,12 +4,12 @@ POST http://127.0.0.1:8000/products/ HTTP/1.1
 content-type: application/json
 
 {
-    "name": "Smartphone",
+    "name": "Smartphone Motorola",
     "description": "O smartphone Moto E7 é perfeito para te ajudar nas tarefas básicas do dia a dia, como utilizar aplicativos de mensagens, ligações e envio de SMS. Possui um design elegante, sofisticado e moderno. Sua câmera frontal tem a resolução de 5MP, já as traseiras possuem 48MP e 2MP de resolução. A tela de 6,5 polegadas IPS Max Vision conta com resolução HD+ para garantir uma ótima visualização ao assistir seus conteúdos favoritos, como filmes e séries. Com 32GB de armazenamento interno, ele é ideal para guardar suas fotos, músicas ou vídeos! E se mesmo assim achar pouco, você pode usar um cartão MicroSD de até 512GB para aumentar essa capacidade. Possui o processador MediaTek Helio G2 Octa-Core juntamente com sua memória RAM de 2GB. Fique sempre conectado com a tecnologia 4G em um aparelho dual chip e tenha bateria para navegar o dia todo com 4000mAh. O leitor de impressão digital garante que os seus conteúdos e dados fiquem sempre super protegidos.",
     "price": 809.10,
     "quantity": 10,
     "image": "http://127.0.0.1:8000/produto/Smartphone.png",
-    "code": 456789123,
+    "code": 12345678102,
     "attributes": {
         "RAM_memory": "2G",
         "technology": "4G",
@@ -20,21 +20,15 @@ content-type: application/json
 }
 
 ###########################################
-###Consultar todos os produtos
+###Consultar pelo codigo
 
-GET http://127.0.0.1:8000/products/ HTTP/1.1
-content-type: application/json
-
-###########################################
-###Consultar produto pelo codigo
-
-GET http://127.0.0.1:8000/products?code=123456789 HTTP/1.1
+GET http://127.0.0.1:8000/products/code/code=123456789 HTTP/1.1
 content-type: application/json
 
 ###########################################
 ###Consultar produto pelo nome
 
-GET http://127.0.0.1:8000/products?nome=Smartphone Motorola Moto E7 32GB Cinza HTTP/1.1
+GET http://127.0.0.1:8000/products/name/name=Smartphone Motorola HTTP/1.1
 content-type: application/json
 
 ##########################################
