@@ -10,6 +10,12 @@ async def find_opened_cart(shopcarts_collection, email):
     return None
 
 
+async def find_closed_cart(shopcarts_collection, email, skip, limit):
+    shopcart_cursor = shopcarts_collection.find({'client.email': email, 'is_open': False}).skip(int(skip)).limit(int(skip))
+    shopcarts = await shopcart_cursor.to_list(length=limit)
+    return json.loads(json_util.dumps(shopcarts))
+
+
 async def update_opened_cart(shopcarts_collection, email, shopcart):
     shopcart = jsonable_encoder(shopcart)
     cart = await shopcarts_collection.update_one(
@@ -55,3 +61,15 @@ async def find_product_in_cart(shopcarts_collection, email, code):
     if product is not None:
         return True
     return False
+
+
+async def update_cart_to_closed(shopcarts_collection, email):
+    cart = await shopcarts_collection.update_one(
+        {'client.email': email},
+        {'$set': {'is_open': False}}
+    )
+    if cart.modified_count:
+        return {'status': 'OK. Carrinho fechado'}
+    return None
+
+    #como retornar o resultado final do carrinho fechado. 

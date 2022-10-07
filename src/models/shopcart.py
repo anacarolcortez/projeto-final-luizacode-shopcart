@@ -1,8 +1,9 @@
+from logging import raiseExceptions
 from src.models.clients import get_client_by_email
 from src.models.product import get_product_by_code
 from src.schemas.shopcart import ShopcartSchema, UpdateShopcartSchema
 from fastapi.encoders import jsonable_encoder
-from src.services.shopcart import find_opened_cart, find_product_in_cart, insert_cart, update_opened_cart, update_opened_cart_insert_new_product
+from src.services.shopcart import find_closed_cart, find_opened_cart, find_product_in_cart, insert_cart, update_cart_to_closed, update_opened_cart, update_opened_cart_insert_new_product
 
 
 async def validate_cart(shopcarts_collection, clients_collection, products_collection, email, code):
@@ -15,6 +16,9 @@ async def validate_cart(shopcarts_collection, clients_collection, products_colle
             raise Exception("Produto não cadastrado")
         
         cart_data = await get_opened_cart(shopcarts_collection, email)
+        if type(cart_data) != dict:
+            cart_data = None
+                
         return client_data, product_data, cart_data
             
 
@@ -64,9 +68,32 @@ async def update_cart(shopcarts_collection, clients_collection, products_collect
 
 async def get_opened_cart(shopcarts_collection, email):
     try:
-        return await find_opened_cart(shopcarts_collection, email)
+        response = await find_opened_cart(shopcarts_collection, email)
+        if response is not None:
+            return response
+        raise Exception("Não há carrinhos abertos para este cliente")
     except Exception as e:
         return f'get_opened_cart.error: {e}'
+
+
+async def get_closed_cart(shopcarts_collection, email, skip, limit):
+    try:
+        response = await find_closed_cart(shopcarts_collection, email, skip, limit)
+        if response is not None:
+            return response
+        raise Exception("Não há carrinhos fechados para este cliente")
+    except Exception as e:
+        return f'get_closed_cart.error: {e}'
+
+
+async def put_closed_shopcart(shopcarts_collection, email):
+    try:
+        response = await update_cart_to_closed(shopcarts_collection, email)
+        if response != None:
+            return response
+        raise Exception("Não há carrinho aberto para este cliente")
+    except Exception as e:
+        return f'put_closed_shopcart.error: {e}'
 
 
 async def get_product_stock(product):

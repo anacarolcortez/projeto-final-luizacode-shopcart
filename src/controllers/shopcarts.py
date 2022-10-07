@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from src.models.shopcart import create_shopcart, update_cart
+from src.models.shopcart import create_shopcart, get_closed_cart, get_opened_cart, put_closed_shopcart, update_cart
 from src.schemas.shopcart import NewShopcartSchema, UpdateShopcartSchema
 from src.server.database import db
 
@@ -33,7 +33,30 @@ async def patch_shopcart(email: str, code:str, product_quantity: UpdateShopcartS
         code,
         product_quantity
     )
-    
+
+@router.get("/opened/{email}/", tags=["shopcarts"])
+async def get_shopcart_open(email: str):
+    return await get_opened_cart(
+        shopcarts_collection,
+        email
+    )
+
+@router.get("/closed/{email}/", tags=["shopcarts"])
+async def get_shopcart_close(email: str, skip = 0, limit = 10):
+    return await get_closed_cart(
+        shopcarts_collection,
+        email,
+        skip,
+        limit
+    )  
+
+@router.put("/close/{email}/", tags=["shopcarts"])
+async def closing_shopcart(email: str):
+    return await put_closed_shopcart(
+        shopcarts_collection,
+        email
+    )  
+
 #delete: excluir produto do carrinho e fazer update da quantidade, se carrinho zerado excluir ele também
 
 #get carrinho aberto
