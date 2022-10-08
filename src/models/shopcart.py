@@ -1,7 +1,6 @@
-from logging import raiseExceptions
 from src.models.clients import get_client_by_email
 from src.models.product import get_product_by_code
-from src.schemas.shopcart import ShopcartSchema, UpdateShopcartSchema
+from src.schemas.shopcart import ShopcartSchema
 from fastapi.encoders import jsonable_encoder
 from src.services.shopcart import find_closed_cart, find_opened_cart, find_product_in_cart, insert_cart, update_cart_to_closed, update_opened_cart, update_opened_cart_insert_new_product
 
@@ -31,8 +30,8 @@ async def create_shopcart(shopcarts_collection, clients_collection, products_col
                 client=client_data,
                 products=[product_data],
                 is_open=True,
-                quantity_cart= new_cart.quantity_cart,
-                value=new_cart.quantity_cart * product_data["price"]
+                quantity_cart= new_cart.quantity_product,
+                value=new_cart.quantity_product * product_data["price"]
             )
             response = await insert_cart(shopcarts_collection, jsonable_encoder(shopcart_data))
             if response is not None:
@@ -44,26 +43,24 @@ async def create_shopcart(shopcarts_collection, clients_collection, products_col
         return f'create_shopcart.error: {e}'
 
 
-async def update_cart(shopcarts_collection, clients_collection, products_collection, email, code, new_cart):
-    client_data, product_data, cart_data = await validate_cart(shopcarts_collection, clients_collection, products_collection, email, code)
-
-    has_product = await find_product_in_cart(shopcarts_collection, client_data['email'], product_data['code'])
-    if has_product:
-        shopcart_data = UpdateShopcartSchema(
-            quantity_cart = get_quantity_cart(cart_data['quantity_cart'], new_cart.quantity_cart),
-            value = get_value_cart(new_cart.quantity_cart, product_data['price'], cart_data['value'])
-        )
-        response = await update_opened_cart(shopcarts_collection, email, shopcart_data)
-    else:
-        shopcart_data = UpdateShopcartSchema(
-            products = product_data,
-            quantity_cart = get_quantity_cart(cart_data['quantity_cart'], new_cart.quantity_cart),
-            value = get_value_cart(new_cart.quantity_cart, product_data['price'], cart_data['value'])
-        )
-        response = await update_opened_cart_insert_new_product(shopcarts_collection, email, shopcart_data)
-    if response is not None:
-        return response
-    raise Exception("Erro ao atualizar carrinho de compras")
+async def update_cart(shopcarts_collection, clients_collection, products_collection, email, code, update_cart):
+    try:
+        client_data, product_data, cart_data = await validate_cart(shopcarts_collection, clients_collection, products_collection, email, code)
+        if cart_data is None:
+            raise Exception("Este cliente não possui carrinhos abertos para serem atualizados")
+        has_quantity = await compare_product_quantity(update_cart.quantity_product, product_data)
+        if not has_quantity:
+            raise Exception("A quantidade de produtos solicitada não existe em estoque")    
+        # validar: adicionar e remover a quantidade do produto dentro do carrinho
+        new_quantity = await get_quantity_cart(cart_data["quantity_cart"], update_cart.quantity_product)
+        new_value = await get_value_cart(update_cart.quantity_product, product_data["price"], cart_data["value"])
+        cart_has_the_product = await find_product_in_cart(shopcarts_collection, email, code)
+        if cart_has_the_product:
+            return await update_opened_cart(shopcarts_collection, email, new_quantity, new_value)
+        else:
+            return await update_opened_cart_insert_new_product(shopcarts_collection, email, product_data, new_quantity, new_value)
+    except Exception as e:
+        return f'update_cart.error: {e}'
 
 
 async def get_opened_cart(shopcarts_collection, email):
@@ -96,19 +93,15 @@ async def put_closed_shopcart(shopcarts_collection, email):
         return f'put_closed_shopcart.error: {e}'
 
 
-async def get_product_stock(product):
-    return product["quantity"]
+async def compare_product_quantity(insert_quantity, product):
+    product_quantity = product["quantity"]
+    return product_quantity >= insert_quantity
 
 
-async def compare_product_quantity(cart_quantity, products_collection, product):
-    product_quantity = await get_product_stock(products_collection, product)
-    return product_quantity >= cart_quantity
+async def get_quantity_cart(cart_quantity, insert_quantity):
+    return cart_quantity + insert_quantity
 
 
-async def get_quantity_cart(cart_quantity, product_quantity):
-    return cart_quantity + product_quantity
-
-
-async def get_value_cart(product_quantity, product_value, cart_value):
-    cart_value += product_quantity * product_value
+async def get_value_cart(insert_quantity, product_value, cart_value):
+    cart_value += insert_quantity * product_value
     return cart_value

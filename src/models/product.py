@@ -22,7 +22,7 @@ async def get_product_by_code(products_collection, code):
         if product_code is not None:
             return json.loads(json_util.dumps(product_code))
         else:
-            raise Exception("Producto não encontrado")
+            raise Exception("Produto não encontrado")
     except Exception as e:
         return f'get_product_by_code.error: {e}'  
     
