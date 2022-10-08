@@ -9,7 +9,7 @@ content-type: application/json
     "price": 809.10,
     "quantity": 10,
     "image": "http://127.0.0.1:8000/produto/Smartphone.png",
-    "code": 12345678102,
+    "code": 123456789,
     "attributes": {
         "RAM_memory": "2G",
         "technology": "4G",
