@@ -13,7 +13,6 @@ class ProductSchema(BaseModel):
     name: str = Field(max_length=100)
     description: str
     price: float
-    quantity: int
     image: str
     code: str = Field(unique=True)
     attributes: AttributesSchema
@@ -41,5 +40,6 @@ class ProductSchema(BaseModel):
         
 class UserName(BaseModel):
     name: str
+
 
     

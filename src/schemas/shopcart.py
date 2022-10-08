@@ -14,11 +14,5 @@ class ShopcartSchema(BaseModel):
     value: Optional[float] = Field(default=0.0)
 
 
-class NewShopcartSchema(BaseModel):
-    quantity_cart: Optional[int] = Field(default=0)
-
-
 class UpdateShopcartSchema(BaseModel):
-    products: Optional[ProductSchema]
-    quantity_cart: Optional[int] = Field(default=0)
-    value: Optional[float] = Field(default=0.0)
+    quantity_product: Optional[int] = Field(default=0)

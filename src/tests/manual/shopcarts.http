@@ -3,8 +3,20 @@ content-type: application/json
 
 
 { 
-    "quantity_cart": 2   
+    "quantity_product": 2   
 }
+
+###########################################
+###Atualizar carrinho aberto
+
+PATCH http://127.0.0.1:8000/shopcarts/finn@adventuretime.com/12345678102 HTTP/1.1
+content-type: application/json
+
+
+{ 
+    "quantity_product": 1   
+}
+
 
 ###########################################
 ###Consultar carrinho aberto

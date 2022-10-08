@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from src.models.shopcart import create_shopcart, get_closed_cart, get_opened_cart, put_closed_shopcart, update_cart
-from src.schemas.shopcart import NewShopcartSchema, UpdateShopcartSchema
+from src.schemas.shopcart import UpdateShopcartSchema
 from src.server.database import db
 
 
@@ -12,7 +12,7 @@ products_collection = db.products_collection
 
 
 @router.post("/{email}/{code}", tags=["shopcarts"])
-async def post_shopcart(email: str, code:str, new_cart: NewShopcartSchema):
+async def post_shopcart(email: str, code:str, new_cart: UpdateShopcartSchema):
     return await create_shopcart(
         shopcarts_collection,
         clients_collection,

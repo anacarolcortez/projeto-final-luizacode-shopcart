@@ -16,28 +16,25 @@ async def find_closed_cart(shopcarts_collection, email, skip, limit):
     return json.loads(json_util.dumps(shopcarts))
 
 
-async def update_opened_cart(shopcarts_collection, email, shopcart):
-    shopcart = jsonable_encoder(shopcart)
+async def update_opened_cart(shopcarts_collection, email, new_quantity, new_value):
     cart = await shopcarts_collection.update_one(
         {'client.email': email},
-        {'$set': shopcart}
+        {'$set': {'quantity_cart': new_quantity, 'value': new_value}}
     )
     if cart.modified_count:
-        return json.loads(json_util.dumps(cart))
-    return None
+        return await find_opened_cart(shopcarts_collection, email)
+    raise Exception("Erro ao atualizar o carrinho")
 
 
-async def update_opened_cart_insert_new_product(shopcarts_collection, email, shopcart):
-    shopcart = jsonable_encoder(shopcart)
+async def update_opened_cart_insert_new_product(shopcarts_collection, email, product, new_quantity, new_value ):
     cart = await shopcarts_collection.update_one(
         {'client.email': email}, 
-        {'$addToSet': {'products': shopcart.product}}, 
-        {'$set': {'quantity_cart': shopcart.quantity_cart,
-                  'value': shopcart.value}}
+        {'$addToSet': {'products': [product]}, 
+        '$set': {'quantity_cart': new_quantity, 'value': new_value}}
     )
     if cart.modified_count:
-        return json.loads(json_util.dumps(cart))
-    return None
+        return await find_opened_cart(shopcarts_collection, email)
+    raise Exception("Erro ao atualizar o novo produto no carrinho")
 
 
 async def insert_cart(shopcarts_collection, shopcart):
