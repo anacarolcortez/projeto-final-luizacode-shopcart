@@ -14,6 +14,7 @@ class DataBase():
     delivery_collection = db['delivery']
     products_collection = db['products']
     shopcarts_collection = db['shopcarts']
+    stocks_collection = db['stocks']
 
 
 db = DataBase()
