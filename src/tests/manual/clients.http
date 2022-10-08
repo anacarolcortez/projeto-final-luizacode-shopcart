@@ -2,9 +2,9 @@ POST http://127.0.0.1:8000/clients/ HTTP/1.1
 content-type: application/json
 
 {
-    "name": "Finn", 
-    "email": "finn@adventuretime.com",
-    "cpf": "12345678910"
+    "name": "Lady Rainicorn", 
+    "email": "ladyrainicor@adventuretime.com",
+    "cpf": "45612389101"
 }
 
 
