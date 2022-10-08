@@ -2,9 +2,9 @@ POST http://127.0.0.1:8000/address/ HTTP/1.1
 content-type: application/json
 
 {
-    "zipcode": "05406180",
-    "street": "Cotton Candy Mount",
-    "city": "Cotton Candy Land",
+    "zipcode": "01210200",
+    "street": "Schwabl Zombie Dog",
+    "city": "Red Cave",
     "state": "Land of Ooo"
 }
 

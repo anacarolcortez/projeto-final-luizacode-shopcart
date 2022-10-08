@@ -1,10 +1,8 @@
 from src.models.delivery import (
     create_user_delivery_address,
-    get_delivery_address_by_email,
-    delete_delivery_address_by_zipcode
+    get_delivery_address_by_email
 )
 from fastapi import APIRouter
-from src.schemas.delivery import DeliverySchema
 from src.schemas.address import AdressComplementSchema
 from src.server.database import db
 
@@ -30,14 +28,5 @@ async def post_delivery_address(email: str, zipcode:str, address: AdressCompleme
 async def get_delivery_address(email: str):
     return await get_delivery_address_by_email(
         delivery_collection,
-        email
-    )
-
-
-@router.delete("/{zipcode}/client/{email}", tags=["delivery"])
-async def delete_delivery_address(zipcode: str, email: str):
-    return await delete_delivery_address_by_zipcode(
-        delivery_collection,
-        zipcode,
         email
     )
