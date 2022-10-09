@@ -17,3 +17,10 @@ async def find_product_stock(stocks_collection, id):
     if stock is not None:
         return json.loads(json_util.dumps(stock))
     return None
+
+
+async def find_product_quantity_stock(stocks_collection, code):
+    stock = await stocks_collection.find_one({'product.code': code})
+    if stock is not None:
+        return stock['stock_quantity']
+    return 0

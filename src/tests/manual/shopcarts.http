@@ -6,7 +6,7 @@ content-type: application/json
 
 
 { 
-    "quantity_product": 2   
+    "quantity_product": 500   
 }
 
 ###########################################
