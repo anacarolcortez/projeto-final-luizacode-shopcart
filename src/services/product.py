@@ -39,6 +39,22 @@ async def get_products_list(products_collection, skip, limit):
     else:
         return None
 
-#async def update_product_by_name
 
-#async def delete_product_by_code
+async def update_product_by_name(products_collection, code, name):
+    data = jsonable_encoder(name)
+    product = await products_collection.update_one(
+        {'code': code},
+        {'$set': {'name': data['name']}}
+        )
+    if product.modified_count:
+        return {'status': 'Produto atualizado com sucesso'}
+    raise Exception("Erro ao atualizar produto")
+    
+
+async def delete_product_by_code(products_collection, code):
+    product = await products_collection.delete_one(
+        {'code': code}
+        )
+    if product.deleted_count:
+            return {'status': 'Produto deletado com sucesso'}
+    raise Exception("Erro ao deletar produto")
