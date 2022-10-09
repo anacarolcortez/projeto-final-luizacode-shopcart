@@ -51,7 +51,7 @@ async def create_shopcart(shopcarts_collection, clients_collection, products_col
                 return response
             raise Exception("Erro ao criar carrinho de compras")
         else:
-            raise Exception("Já existe um carrinho para este cliente. Atualize o carrinho para alterar suas informações")
+            raise Exception("Já existe um carrinho aberto para este cliente. Atualize ou feche o carrinho")
     except Exception as e:
         return f'create_shopcart.error: {e}'
 
