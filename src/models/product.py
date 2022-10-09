@@ -3,7 +3,7 @@ from bson import ObjectId
 from bson import json_util
 import json
 
-from src.services.product import find_one_product_by_code, insert_new_product, find_one_product_by_name, get_products_list
+from src.services.product import find_one_product_by_code, insert_new_product, find_one_product_by_name, get_products_list, update_product_by_name, delete_product_by_code
 
 async def create_product(products_collection, product):
     try:
@@ -48,25 +48,15 @@ async def get_all_products(products_collection, skip, limit):
     
 
 async def update_product(products_collection, code, name):
-    data = jsonable_encoder(name)
     try:
-        product = await products_collection.update_one(
-            {'code': code},
-            {'$set': {'name': data['name']}}
-        )
-        if product.modified_count:
-            return True, product.modified_count
-        return False, 0
+        return await update_product_by_name(products_collection, code, name)
     except Exception as e:
         return f'update_product.error: {e}'
 
 
+
 async def delete_product(products_collection, code):
     try:
-        product = await products_collection.delete_one(
-            {'code': code}
-        )
-        if product.deleted_count:
-            return {'status': 'Product deleted'}
+        return await delete_product_by_code(products_collection, code)
     except Exception as e:
         return f'delete_product.error: {e}'

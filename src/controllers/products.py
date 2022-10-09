@@ -44,16 +44,12 @@ async def get_all_products():
     )
 
 @router.patch("/{code}", tags=["products"])
-async def patch_product_email(code: str, name: ProductNameSchema):
-    is_updated, numbers_updated = await update_product(
+async def patch_product_code(code: str, name: ProductNameSchema):
+    return await update_product(
         products_collection,
         code,
         name
     )
-    if is_updated:
-        return f"Atualização realizada com sucesso, número de documentos alterados {numbers_updated}"
-    else:
-        return "Atualização falhou!"
 
 
 @router.delete("/{code}", tags=["products"])
