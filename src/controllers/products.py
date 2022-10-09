@@ -7,7 +7,7 @@ from src.models.product import (
     get_products_list
 )
 from fastapi import APIRouter
-from src.schemas.product import ProductSchema, UserName
+from src.schemas.product import ProductSchema, ProductNameSchema
 from src.server.database import db
 
 router = APIRouter(prefix="/products")
@@ -44,7 +44,7 @@ async def get_all_products():
     )
 
 @router.patch("/{code}", tags=["products"])
-async def patch_product_email(code: str, name: UserName):
+async def patch_product_email(code: str, name: ProductNameSchema):
     is_updated, numbers_updated = await update_product(
         products_collection,
         code,

@@ -1,4 +1,3 @@
-from enum import unique
 from pydantic import BaseModel, Field
 from bson import ObjectId
 
@@ -37,9 +36,17 @@ class ProductSchema(BaseModel):
                 }
             }
         }
-        
-class UserName(BaseModel):
-    name: str
 
 
+class ProductNameSchema(BaseModel):
+    name: str      
+
+class CartProductSchema(BaseModel):
+    name: str = Field(max_length=100)
+    description: str
+    price: float
+    quantity: int
+    image: str
+    code: str = Field(unique=True)
+    attributes: AttributesSchema
     

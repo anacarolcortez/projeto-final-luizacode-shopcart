@@ -47,8 +47,8 @@ async def get_all_products(products_collection, skip, limit):
     
     
 
-async def update_product(products_collection, code, nam):
-    data = jsonable_encoder(nam)
+async def update_product(products_collection, code, name):
+    data = jsonable_encoder(name)
     try:
         product = await products_collection.update_one(
             {'code': code},

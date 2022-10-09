@@ -6,5 +6,5 @@ content-type: application/json
 
 
 { 
-    "stock_quantity": 2
+    "stock_quantity": 50
 }
