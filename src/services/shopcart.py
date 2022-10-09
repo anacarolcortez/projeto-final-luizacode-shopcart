@@ -68,5 +68,21 @@ async def update_cart_to_closed(shopcarts_collection, email):
     if cart.modified_count:
         return {'status': 'OK. Carrinho fechado'}
     return None
-
     #como retornar o resultado final do carrinho fechado. 
+
+
+async def update_product_quantity(shopcarts_collection, email, code, quantity):
+    cart = await shopcarts_collection.update_one(
+        {'client.email': email, 'is_open': True, 'products.code': code},
+        {'$inc': {'products.$.quantity': quantity}}
+    )
+    if cart.modified_count:
+        return True
+    return False
+
+
+async def update_cart_quantity(shopcarts_collection, email, code):
+    cart = await shopcarts_collection.update_one(
+
+        
+    )
