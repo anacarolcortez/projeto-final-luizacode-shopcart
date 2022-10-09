@@ -1,7 +1,7 @@
 ###########################################
 ###Criar estoque para produto
 
-POST http://127.0.0.1:8000/stocks/123456789 HTTP/1.1
+POST http://127.0.0.1:8000/stocks/9876543210 HTTP/1.1
 content-type: application/json
 
 
