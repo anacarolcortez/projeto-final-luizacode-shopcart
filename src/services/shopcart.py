@@ -29,7 +29,7 @@ async def update_opened_cart(shopcarts_collection, email, new_quantity, new_valu
 
 async def update_opened_cart_insert_new_product(shopcarts_collection, email, product):
     cart = await shopcarts_collection.update_one(
-        {'client.email': email},
+        {'client.email': email, 'is_open': True},
         {'$addToSet': {'products': product}}
     )
     if cart.modified_count:
@@ -53,8 +53,7 @@ async def find_cart_by_id(shopcarts_collection, id):
 
 async def find_product_in_cart(shopcarts_collection, email, code):
     product = await shopcarts_collection.find_one(
-        {"client.email": email,
-         "products.code": code}
+        {"client.email": email, "products.code": code, "is_open": True}
     )
     if product is not None:
         return True
