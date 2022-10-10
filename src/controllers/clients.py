@@ -24,10 +24,13 @@ async def post_client(client: UserClientSchema):
 
 @router.get("/{email}", tags=["clients"])
 async def get_client(email: str=Depends(validate_credentials)):
-    return await get_client_by_email(
-        clients_collection,
-        email
-    )
+    try:
+        return await get_client_by_email(
+            clients_collection,
+            email
+        )
+    except Exception as e:
+        return f'{e}'
 
 
 @router.get("/", tags=["clients"])
