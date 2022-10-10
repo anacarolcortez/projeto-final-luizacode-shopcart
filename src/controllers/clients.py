@@ -3,28 +3,32 @@ from src.models.clients import (
     get_all_clients,
     get_client_by_email,
 )
-from fastapi import APIRouter
-from src.schemas.client import ClientSchema
+from fastapi import APIRouter, Depends
+from src.schemas.client import UserClientSchema
+from src.security.basic_auth import validate_credentials
 from src.server.database import db
 
 router = APIRouter(prefix="/clients")
 clients_collection = db.clients_collection
+users_collection = db.users_collection
 
 
 @router.post("/", tags=["clients"])
-async def post_client(client: ClientSchema):
+async def post_client(client: UserClientSchema):
     return await create_client(
         clients_collection,
+        users_collection,
         client
     )
 
 
 @router.get("/{email}", tags=["clients"])
-async def get_client(email: str):
+async def get_client(email: str=Depends(validate_credentials)):
     return await get_client_by_email(
         clients_collection,
         email
     )
+
 
 @router.get("/", tags=["clients"])
 async def list_clients():

@@ -1,10 +1,9 @@
 import uvicorn
 from fastapi import FastAPI
-from src.controllers import address, clients, delivery, shopcarts, stocks, users, products
+from src.controllers import address, clients, delivery, shopcarts, stocks, products
 
 
 app = FastAPI(title="Shopping Cart")
-app.include_router(users.router)
 app.include_router(clients.router)
 app.include_router(address.router)
 app.include_router(delivery.router)
