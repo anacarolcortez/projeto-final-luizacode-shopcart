@@ -1,6 +1,10 @@
-from fastapi import APIRouter
-from src.models.shopcart import create_shopcart, get_closed_cart, get_opened_cart, put_closed_shopcart, update_cart
+from fastapi import APIRouter, Depends
+from src.models.shopcart import (
+    create_shopcart, get_closed_cart, 
+    get_opened_cart, put_closed_shopcart, update_cart
+)
 from src.schemas.shopcart import UpdateShopcartSchema
+from src.security.basic_auth import validate_credentials
 from src.server.database import db
 
 
@@ -12,55 +16,66 @@ stocks_collection = db.stocks_collection
 
 
 @router.post("/{email}/{code}", tags=["shopcarts"])
-async def post_shopcart(email: str, code: str, product_quantity: UpdateShopcartSchema):
-    return await create_shopcart(
-        shopcarts_collection,
-        clients_collection,
-        products_collection,
-        stocks_collection,
-        email,
-        code,
-        product_quantity
-    )
+async def post_shopcart(code: str, product_quantity: UpdateShopcartSchema, email: str=Depends(validate_credentials)):
+    try:
+        return await create_shopcart(
+            shopcarts_collection,
+            clients_collection,
+            products_collection,
+            stocks_collection,
+            email,
+            code,
+            product_quantity
+        )
+    except Exception as e:
+        return f'{e}'
 
 
 @router.patch("/{email}/{code}", tags=["shopcarts"])
-async def patch_shopcart(email: str, code: str, product_quantity: UpdateShopcartSchema):
-    return await update_cart(
-        shopcarts_collection,
-        clients_collection,
-        products_collection,
-        stocks_collection,
-        email,
-        code,
-        product_quantity
-    )
+async def patch_shopcart(code: str, product_quantity: UpdateShopcartSchema, email: str=Depends(validate_credentials)):
+    try:
+        return await update_cart(
+            shopcarts_collection,
+            clients_collection,
+            products_collection,
+            stocks_collection,
+            email,
+            code,
+            product_quantity
+        )
+    except Exception as e:
+        return f'{e}'
 
 
 @router.get("/opened/{email}/", tags=["shopcarts"])
-async def get_shopcart_open(email: str):
-    return await get_opened_cart(
-        shopcarts_collection,
-        email
-    )
-
+async def get_shopcart_open(email: str=Depends(validate_credentials)):
+    try:
+        return await get_opened_cart(
+            shopcarts_collection,
+            email
+        )
+    except Exception as e:
+        return f'{e}'
 
 @router.get("/closed/{email}/", tags=["shopcarts"])
-async def get_shopcart_close(email: str, skip=0, limit=10):
-    return await get_closed_cart(
-        shopcarts_collection,
-        email,
-        skip,
-        limit
-    )
+async def get_shopcart_close(skip=0, limit=10, email: str=Depends(validate_credentials)):
+    try:
+        return await get_closed_cart(
+            shopcarts_collection,
+            email,
+            skip,
+            limit
+        )
+    except Exception as e:
+        return f'{e}'
 
 
 @router.put("/close/{email}/", tags=["shopcarts"])
-async def closing_shopcart(email: str):
-    return await put_closed_shopcart(
-        shopcarts_collection,
-        email
-    )
-
-# delete: excluir produto do carrinho e fazer update da quantidade, se carrinho zerado excluir ele também
-# put: fechar carrinho aberto (update de propriedade is_openned)
+async def closing_shopcart(email: str=Depends(validate_credentials)):
+    try:
+        return await put_closed_shopcart(
+            shopcarts_collection,
+            email
+        )
+    except Exception as e:
+        return f'{e}'
