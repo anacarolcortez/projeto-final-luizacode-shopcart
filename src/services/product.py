@@ -40,14 +40,14 @@ async def get_products_list(products_collection, skip, limit):
         return None
 
 
-async def update_product_by_name(products_collection, code, name):
-    data = jsonable_encoder(name)
+async def update_product_info(products_collection, code, product_updated):
+    data = jsonable_encoder(product_updated)
     product = await products_collection.update_one(
         {'code': code},
-        {'$set': {'name': data['name']}}
+        {'$set': data}
         )
     if product.modified_count:
-        return {'status': 'Produto atualizado com sucesso'}
+        return await find_one_product_by_code(products_collection, code)
     raise Exception("Erro ao atualizar produto")
     
 

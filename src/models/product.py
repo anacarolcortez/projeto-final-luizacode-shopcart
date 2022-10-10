@@ -1,9 +1,11 @@
 from fastapi.encoders import jsonable_encoder
-from bson import ObjectId
 from bson import json_util
 import json
 
-from src.services.product import find_one_product_by_code, insert_new_product, find_one_product_by_name, get_products_list, update_product_by_name, delete_product_by_code
+from src.services.product import (
+    find_one_product_by_code, insert_new_product, find_one_product_by_name, 
+    get_products_list, delete_product_by_code, update_product_info
+)
 
 async def create_product(products_collection, product):
     try:
@@ -33,7 +35,7 @@ async def get_product_by_name(products_collection, name):
         if product_name is not None:
             return json.loads(json_util.dumps(product_name))
         else:
-            raise Exception("Producto não encontrado")
+            raise Exception("Produto não encontrado")
     except Exception as e:
         return f'get_product_by_name.error: {e}'  
 
@@ -47,9 +49,9 @@ async def get_all_products(products_collection, skip, limit):
     
     
 
-async def update_product(products_collection, code, name):
+async def update_product(products_collection, code, update_product):
     try:
-        return await update_product_by_name(products_collection, code, name)
+        return await update_product_info(products_collection, code, update_product)
     except Exception as e:
         return f'update_product.error: {e}'
 
