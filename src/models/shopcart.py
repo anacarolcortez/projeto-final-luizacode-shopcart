@@ -4,8 +4,8 @@ from src.schemas.shopcart import ShopcartSchema
 from fastapi.encoders import jsonable_encoder
 from src.services.stocks import find_product_quantity_stock
 from src.services.shopcart import (
-    find_closed_cart, find_opened_cart, find_product_in_cart, insert_cart, 
-    update_cart_to_closed, update_opened_cart, update_opened_cart_insert_new_product, update_product_quantity)
+    find_closed_cart, find_opened_cart, find_product_in_cart, insert_cart, update_cart_quantity_and_value, 
+    update_cart_to_closed, update_opened_cart_insert_new_product, update_product_quantity)
 
 
 async def validate_cart(shopcarts_collection, clients_collection, products_collection, 
@@ -57,26 +57,26 @@ async def create_shopcart(shopcarts_collection, clients_collection, products_col
 
 
 async def update_cart(shopcarts_collection, clients_collection, products_collection, 
-                      stocks_collection, email, code, new_produtc_qt):
+                      stocks_collection, email, code, insert_product):
     try:
-        pass
-        # _, product_data, stock_qt, cart_data = await validate_cart(shopcarts_collection, clients_collection, 
-        #                                                                      products_collection, stocks_collection,
-        #                                                                      email, code)
+        _, product_data, stock_qt, cart_data = await validate_cart(shopcarts_collection, clients_collection, 
+                                                                             products_collection, stocks_collection,
+                                                                             email, code)
         
-        # if cart_data is None:
-        #     raise Exception("Este cliente não possui carrinhos abertos para serem atualizados")
+        if cart_data is None:
+            raise Exception("Este cliente não possui carrinhos abertos para serem atualizados")
         
-        # if not await has_stock_availability(product_data["quantity"], stock_qt):
-        #     raise Exception("Quantidade insuficiente de estoque para este produto")
+        if not await has_stock_availability(product_data["quantity"], stock_qt):
+            raise Exception("Quantidade insuficiente de estoque para este produto")
 
-        # # validar: adicionar e remover a quantidade do produto dentro do carrinho
+        cart_has_the_product = await find_product_in_cart(shopcarts_collection, email, code)       
+        if cart_has_the_product:
+            await update_product_quantity(shopcarts_collection, email, code, insert_product.quantity_product)
+        else:
+            product_data["quantity"] = insert_product.quantity_product
+            await update_opened_cart_insert_new_product(shopcarts_collection, email, product_data)
+        return await update_cart_quantity_and_value(shopcarts_collection, email)
     
-        # cart_has_the_product = await find_product_in_cart(shopcarts_collection, email, code)       
-        # if cart_has_the_product:
-        #     response = await update_product_quantity(shopcarts_collection, email, code, new_produtc_qt.quantity_product)
-        # else:
-        #     response = await update_opened_cart_insert_new_product(shopcarts_collection, email, product_data, new_cart_quantity, new_cart_value)
     except Exception as e:
         return f'update_cart.error: {e}'
 
@@ -113,12 +113,3 @@ async def put_closed_shopcart(shopcarts_collection, email):
 
 async def has_stock_availability(product_quantity, stock_quantity):
     return stock_quantity >= product_quantity
-
-
-async def get_quantity_cart(cart_quantity, insert_quantity):
-    return cart_quantity + insert_quantity
-
-
-async def get_value_cart(insert_quantity, product_value, cart_value):
-    cart_value += insert_quantity * product_value
-    return cart_value

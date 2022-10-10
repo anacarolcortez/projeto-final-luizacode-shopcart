@@ -1,7 +1,7 @@
-import logging
 from fastapi.encoders import jsonable_encoder
 from bson import json_util
 import json
+
 
 async def find_opened_cart(shopcarts_collection, email):
     shopcart = await shopcarts_collection.find_one({'client.email': email, 'is_open': True})
@@ -11,7 +11,8 @@ async def find_opened_cart(shopcarts_collection, email):
 
 
 async def find_closed_cart(shopcarts_collection, email, skip, limit):
-    shopcart_cursor = shopcarts_collection.find({'client.email': email, 'is_open': False}).skip(int(skip)).limit(int(skip))
+    shopcart_cursor = shopcarts_collection.find(
+        {'client.email': email, 'is_open': False}).skip(int(skip)).limit(int(skip))
     shopcarts = await shopcart_cursor.to_list(length=limit)
     return json.loads(json_util.dumps(shopcarts))
 
@@ -26,15 +27,14 @@ async def update_opened_cart(shopcarts_collection, email, new_quantity, new_valu
     raise Exception("Erro ao atualizar o carrinho")
 
 
-async def update_opened_cart_insert_new_product(shopcarts_collection, email, product, new_quantity, new_value ):
+async def update_opened_cart_insert_new_product(shopcarts_collection, email, product):
     cart = await shopcarts_collection.update_one(
-        {'client.email': email}, 
-        {'$addToSet': {'products': [product]}, 
-        '$set': {'quantity_cart': new_quantity, 'value': new_value}}
+        {'client.email': email},
+        {'$addToSet': {'products': [product]}}
     )
     if cart.modified_count:
-        return await find_opened_cart(shopcarts_collection, email)
-    raise Exception("Erro ao atualizar o novo produto no carrinho")
+        return True
+    raise Exception("Erro ao inserir o novo produto no carrinho")
 
 
 async def insert_cart(shopcarts_collection, shopcart):
@@ -42,6 +42,7 @@ async def insert_cart(shopcarts_collection, shopcart):
     if cart.inserted_id:
         return await find_cart_by_id(shopcarts_collection, cart.inserted_id)
     return None
+
 
 async def find_cart_by_id(shopcarts_collection, id):
     shopcart = await shopcarts_collection.find_one({'_id': id})
@@ -52,8 +53,8 @@ async def find_cart_by_id(shopcarts_collection, id):
 
 async def find_product_in_cart(shopcarts_collection, email, code):
     product = await shopcarts_collection.find_one(
-        {"client.email": email, 
-        "products.code": code}
+        {"client.email": email,
+         "products.code": code}
     )
     if product is not None:
         return True
@@ -66,9 +67,11 @@ async def update_cart_to_closed(shopcarts_collection, email):
         {'$set': {'is_open': False}}
     )
     if cart.modified_count:
-        return {'status': 'OK. Carrinho fechado'}
+        opened_cart = find_opened_cart(shopcarts_collection, email)
+        if opened_cart is not None:
+            return opened_cart
+        raise Exception("Erro ao fechar carrinho")
     return None
-    #como retornar o resultado final do carrinho fechado. 
 
 
 async def update_product_quantity(shopcarts_collection, email, code, quantity):
@@ -81,8 +84,38 @@ async def update_product_quantity(shopcarts_collection, email, code, quantity):
     return False
 
 
-async def update_cart_quantity(shopcarts_collection, email, code):
-    cart = await shopcarts_collection.update_one(
+async def update_cart_quantity_and_value(shopcarts_collection, email):
+    total_value, total_quantity = await get_total_quantity_and_value(shopcarts_collection, email)
+    if total_value and total_quantity:
+        cart = await shopcarts_collection.update_one(
+            {'client.email': email, 'is_open': True},
+            {'$set': {'quantity_cart': total_quantity, 'value': total_value}}
+        )
+        if cart.modified_count:
+            opened_cart = find_opened_cart(shopcarts_collection, email)
+            if opened_cart:
+                return opened_cart
+    raise Exception("Erro ao atualizar totais do carrinho")   
 
-        
-    )
+
+async def get_total_quantity_and_value(shopcarts_collection, email):
+    data = await shopcarts_collection.aggregate([
+        {"$match": {"client.email": email, "is_open": True}},
+        {"$unwind": "$products"},
+        {"$group": {
+            "_id": "client.email",
+            "total_price": {
+                "$sum": {
+                    "$multiply": ["$products.price", "$products.quantity"]
+                }
+            },
+            "total_quantity": {
+                "$sum": "$products.quantity"
+            },
+        }}
+    ])
+    if data is not None:
+        return data["total_price"], data["total_quantity"]
+    else:
+        return None
+
