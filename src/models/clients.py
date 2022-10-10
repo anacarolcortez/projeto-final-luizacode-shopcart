@@ -1,9 +1,12 @@
 from fastapi.encoders import jsonable_encoder
+from src.models.user import insert_one_user
+from src.schemas.client import ClientSchema
+from src.schemas.user import UserSchema
 from src.services.clients import (find_one_client_by_email, get_clients_list, 
                                   insert_one_new_client)
 
 
-async def create_client(clients_collection, client):
+async def create_client(clients_collection, users_collection, client):
     try:
         client_data = await find_one_client_by_email(clients_collection, client.email)
         if client_data is not None:
@@ -14,8 +17,21 @@ async def create_client(clients_collection, client):
         if not valid_email:
             raise Exception("Usuário do email deve ter mais de 3 caracteres")
         
-        return await insert_one_new_client(clients_collection, jsonable_encoder(client))
-            
+        
+        create_client = ClientSchema(
+            name=client.name, 
+            email=client.email
+        )
+        
+        create_user = UserSchema(
+            email=client.email,
+            password=client.password
+        )
+        
+        user_client = await insert_one_user(users_collection, create_user)
+        if user_client:
+            return await insert_one_new_client(clients_collection, jsonable_encoder(create_client))
+        raise Exception("Erro ao cadastrar cliente no sistema")
     except Exception as e:
         return f'create_client.error: {e}'
 
