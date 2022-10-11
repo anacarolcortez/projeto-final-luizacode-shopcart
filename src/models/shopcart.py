@@ -67,6 +67,9 @@ async def update_cart(shopcarts_collection, clients_collection, products_collect
         
         if cart_data is None:
             raise Exception("Este cliente não possui carrinhos abertos para serem atualizados")
+        
+        if insert_product.quantity_product <= 0:
+            raise Exception("Informe um valor maior que zero")
 
         if not await has_stock_availability(insert_product.quantity_product, stock_qt):
             raise Exception("Quantidade insuficiente de estoque para este produto")

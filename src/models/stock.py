@@ -5,7 +5,7 @@ from src.services.stocks import create_stock
 
 async def create_product_stock(stocks_collection, products_collection, code, stock):
     try:
-        if stock.stock_quantity < 0:
+        if stock.stock_quantity <= 0:
             raise Exception(
                 "Cadastre uma quantidade válida para o estoque do produto")
         product = await get_product_by_code(products_collection, code)
