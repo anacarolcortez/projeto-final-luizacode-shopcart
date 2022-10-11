@@ -1,3 +1,4 @@
+from numbers import Number
 from fastapi.encoders import jsonable_encoder
 from bson import json_util
 import json
@@ -85,7 +86,7 @@ async def update_product_quantity(shopcarts_collection, email, code, quantity):
 
 async def update_cart_quantity_and_value(shopcarts_collection, email):
     total_value, total_quantity = await get_total_quantity_and_value(shopcarts_collection, email)
-    if total_value and total_quantity:
+    if total_value is not None and total_quantity is not None:
         cart = await shopcarts_collection.update_one(
             {'client.email': email, 'is_open': True},
             {'$set': {'quantity_cart': total_quantity, 'value': total_value}}

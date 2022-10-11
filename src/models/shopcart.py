@@ -1,3 +1,4 @@
+from operator import neg
 from src.models.clients import get_client_by_email
 from src.models.product import get_product_by_code
 from src.schemas.shopcart import ShopcartSchema
@@ -61,6 +62,9 @@ async def create_shopcart(shopcarts_collection, clients_collection, products_col
 async def update_cart(shopcarts_collection, clients_collection, products_collection, 
                       stocks_collection, email, code, insert_product):
     try:
+        if insert_product.quantity_product <= 0:
+            raise Exception("Informe um valor maior que zero")
+        
         _, product_data, stock_qt, cart_data = await validate_cart(shopcarts_collection, clients_collection, 
                                                                              products_collection, stocks_collection,
                                                                              email, code)
@@ -68,8 +72,6 @@ async def update_cart(shopcarts_collection, clients_collection, products_collect
         if cart_data is None:
             raise Exception("Este cliente não possui carrinhos abertos para serem atualizados")
         
-        if insert_product.quantity_product <= 0:
-            raise Exception("Informe um valor maior que zero")
 
         if not await has_stock_availability(insert_product.quantity_product, stock_qt):
             raise Exception("Quantidade insuficiente de estoque para este produto")
@@ -119,3 +121,43 @@ async def put_closed_shopcart(shopcarts_collection, email):
 
 async def has_stock_availability(product_quantity, stock_quantity):
     return stock_quantity >= product_quantity
+
+
+async def update_cart_delete_item(shopcarts_collection, clients_collection, 
+                                  products_collection, stocks_collection, email, code,
+                                  delete_product_qt):
+    
+    try:
+        if delete_product_qt.quantity_product <= 0:
+            raise Exception("Informe um valor maior que zero")
+        
+        _, product_data, _, cart_data = await validate_cart(shopcarts_collection, clients_collection, 
+                                                                                    products_collection, stocks_collection,
+                                                                                    email, code)
+        if cart_data is None:
+            raise Exception("Este cliente não possui carrinhos abertos para serem atualizados")
+        
+        cart_has_the_product = await find_product_in_cart(shopcarts_collection, email, code)       
+        if not cart_has_the_product:
+            raise Exception("Este produto não está inserido no carrinho")
+        
+        product_quantity_in_cart = await get_product_quantity_in_cart(cart_data, code)
+        has_product_qt = await has_stock_availability(delete_product_qt.quantity_product, product_quantity_in_cart)
+        if not has_product_qt:
+            raise Exception("Quantidade a ser excluída excede a quantidade existente no carrinho")
+        
+        deleted_qt = await update_product_quantity(shopcarts_collection, email, code, neg(delete_product_qt.quantity_product))
+        if deleted_qt:
+            return await update_cart_quantity_and_value(shopcarts_collection, email)
+        else:    
+            raise Exception("Erro ao excluir itens do carrinho")
+    
+    except Exception as e:
+        return f'update_cart_delete_item.error: {e}'
+    
+
+async def get_product_quantity_in_cart(cart_data, code):
+    for product in cart_data["products"]:
+        if product["code"] == code:
+            return product["quantity"]
+    return 0
