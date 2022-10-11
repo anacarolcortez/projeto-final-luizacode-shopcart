@@ -53,7 +53,7 @@ async def patch_product_code(code: str, product: UpdateProductSchema):
 
 
 @router.delete("/{code}", tags=["products"])
-async def delete_product_by_id(code: str):
+async def delete_product_by_code(code: str):
     return await delete_product(
         products_collection,
         code

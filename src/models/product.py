@@ -1,4 +1,3 @@
-import logging
 from fastapi.encoders import jsonable_encoder
 from bson import json_util
 import json
