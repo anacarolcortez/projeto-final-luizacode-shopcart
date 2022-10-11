@@ -11,12 +11,14 @@ async def find_one_product_by_id(products_collection, product_id):
     else:
         return None
     
+    
 async def find_one_product_by_code(products_collection, code):
     product = await products_collection.find_one({'code': code})
     if product is not None:
         return json.loads(json_util.dumps(product))
     else:
         return None
+     
      
 async def find_one_product_by_name(products_collection, name):
     product = await products_collection.find_one({'name': name})
@@ -25,11 +27,13 @@ async def find_one_product_by_name(products_collection, name):
     else:
         return None
     
+    
 async def insert_new_product(products_collection, product):
     data = await products_collection.insert_one(product)
     if data.inserted_id:
         return await find_one_product_by_id(products_collection, data.inserted_id)
     raise Exception("Erro ao cadastrar produto")
+
 
 async def get_products_list(products_collection, skip, limit):
     products_cursor = products_collection.find().skip(int(skip)).limit(int(limit))
@@ -41,10 +45,9 @@ async def get_products_list(products_collection, skip, limit):
 
 
 async def update_product_info(products_collection, code, product_updated):
-    data = jsonable_encoder(product_updated)
     product = await products_collection.update_one(
         {'code': code},
-        {'$set': data}
+        {'$set': product_updated}
         )
     if product.modified_count:
         return await find_one_product_by_code(products_collection, code)

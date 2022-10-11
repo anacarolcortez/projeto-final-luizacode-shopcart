@@ -1,3 +1,4 @@
+import logging
 from fastapi.encoders import jsonable_encoder
 from bson import json_util
 import json
@@ -13,7 +14,12 @@ async def create_product(products_collection, product):
         if already_exists is not None:
             raise Exception("Um produto com este código já está cadastrado no sistema")
         else:
-            return await insert_new_product(products_collection, jsonable_encoder(product))
+            product_data = jsonable_encoder(product)
+            is_over_one_cent = await validate_product_price(product_data["price"])
+            if is_over_one_cent:
+                return await insert_new_product(products_collection, product_data)
+            else:
+                raise Exception("Informe um preço maior que R$ 0.01")
     except Exception as e:
         return f'create_product.error: {e}'
 
@@ -51,10 +57,14 @@ async def get_all_products(products_collection, skip, limit):
 
 async def update_product(products_collection, code, update_product):
     try:
-        return await update_product_info(products_collection, code, update_product)
+        product_data = jsonable_encoder(update_product)
+        is_over_one_cent = await validate_product_price(product_data["price"])
+        if is_over_one_cent:
+            return await update_product_info(products_collection, code, product_data)
+        else:
+            raise Exception("Informe um preço maior que R$ 0.01")
     except Exception as e:
         return f'update_product.error: {e}'
-
 
 
 async def delete_product(products_collection, code):
@@ -62,3 +72,8 @@ async def delete_product(products_collection, code):
         return await delete_product_by_code(products_collection, code)
     except Exception as e:
         return f'delete_product.error: {e}'
+    
+    
+async def validate_product_price(product_price):
+    return product_price > 0.01
+        
