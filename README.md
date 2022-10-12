@@ -36,11 +36,6 @@
 :heavy_check_mark: Carrinho de compras  
 
 
-## Deploy da Aplicação :dash:
-
-> Link do deploy da aplicação. Exemplo com Heroku: 
-
-
 ## Pré-requisitos
 
 :warning: [Python](https://www.python.org/downloads/)
@@ -48,9 +43,7 @@
 :warning: [FastApi](https://fastapi.tiangolo.com/)
 :warning: [Uvicorn](https://www.uvicorn.org/)
 :warning: [Motor](https://motor.readthedocs.io/en/stable/)
-
-
-Liste todas as dependencias e libs que o usuário deve ter instalado na máquina antes de rodar a aplicação 
+ 
 
 ## Como rodar a aplicação :arrow_forward:
 
@@ -76,38 +69,20 @@ Liste todas as dependencias e libs que o usuário deve ter instalado na máquina
      ```
      $ pip install -r requirements.txt
      ```
-## Execução
+## Execução local
   ```
-  $ python main.py
+  $ uvicorn.run("main:app", port=8000, reload=True, access_log=False)
    ```
+## Deploy :cloud:
 
+O Heroku foi utilizado como provedor web para o deploy da aplicação. Desta forma, é possível conferir e testar as rotas criadas por meio do OpenAPI (Swagger) diretamente no link:
 
-## Como rodar os testes
-
-Coloque um passo a passo para executar os testes
-
-```
-$ pytest
-```
-
-## Casos de Uso
-
-Explique com mais detalhes como a sua aplicação poderia ser utilizada. O uso de **gifs** aqui seria bem interessante. 
-
-Exemplo: Caso a sua aplicação tenha alguma funcionalidade de login apresente neste tópico os dados necessários para acessá-la.
+[https://luizacode5-shoppingcart.herokuapp.com/docs#/](https://luizacode5-shoppingcart.herokuapp.com/docs#/)
 
 ## Segurança :lock:
 
-### Usuários: 
-
-|name|email|password|
-| -------- |-------- |-------- |
-|Usuário Padrão|xxxxxxxx@gmail.com|senha|
-
-
-## Iniciando/Configurando banco de dados
-
-Se for necessário configurar algo antes de iniciar o banco de dados insira os comandos a serem executados 
+Algumas rotas da API foram protegidas com autenticação básica.
+Para criar um usuário e acessar as APIs restritas a clientes, acesse, pelo Swagger, o endpoint POST do endpoint "/clients" e insira as informações solicitadas. Em seguida, faça login no botão "Authorize", utilizando o e-mail e a senha criados.
 
 ## Linguagens, dependencias e libs utilizadas :books:
 
@@ -119,15 +94,12 @@ Se for necessário configurar algo antes de iniciar o banco de dados insira os c
 - [pytest](https://docs.pytest.org/en/7.1.x/)
 
 
-## Tarefas em aberto
+## Tarefas desenvolvidas
 
-Se for o caso, liste tarefas/funcionalidades que ainda precisam ser implementadas na sua aplicação
+Acesse a Wiki do projeto para detalhamento das features do projeto:
 
-:memo: Tarefa 1 
+[Wiki do Projeto](https://bit.ly/3Vp6Lw7)
 
-:memo: Tarefa 2 
-
-:memo: Tarefa 3 
 
 ## Desenvolvedoras :octocat:
 
