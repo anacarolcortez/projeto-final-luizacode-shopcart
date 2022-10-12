@@ -10,19 +10,19 @@
 
 ### Tópicos 
 
-:small_blue_diamond: [Descrição do projeto](#descrição-do-projeto)
+:small_blue_diamond: [Descrição do projeto](#descrição-do-projeto) 
 ​
-:small_blue_diamond: [Funcionalidades](#funcionalidades-snake)
+:small_blue_diamond: [Funcionalidades](#funcionalidades-snake) 
 ​
-:small_blue_diamond: [Pré-requisitos](#pré-requisitos)
+:small_blue_diamond: [Pré-requisitos](#pré-requisitos) 
 ​
-:small_blue_diamond: [Como rodar a aplicação](#como-rodar-a-aplicação-arrow_forward)
+:small_blue_diamond: [Como rodar a aplicação](#como-rodar-a-aplicação-arrow_forward) 
 ​
-:small_blue_diamond: [Deploy](#deploy-cloud)
+:small_blue_diamond: [Deploy](#deploy-cloud) 
 ​
-:small_blue_diamond: [Segurança](#segurança-lock)
+:small_blue_diamond: [Segurança](#segurança-lock) 
 ​
-:small_blue_diamond: [Equipe](#desenvolvedoras-octocat)
+:small_blue_diamond: [Equipe](#desenvolvedoras-octocat) 
  
 
 ## Descrição do projeto 
@@ -62,6 +62,10 @@ Acesse a Wiki do projeto para obter mais informações sobre as funcionalidades 
 :warning: [Uvicorn](https://www.uvicorn.org/)
 
 :warning: [Motor](https://motor.readthedocs.io/en/stable/)
+
+:warning: [pymongo](https://pymongo.readthedocs.io/en/stable/)
+
+:warning: [pydantic](https://pydantic-docs.helpmanual.io/)
 
 
 ## Como rodar a aplicação :arrow_forward:
@@ -103,19 +107,6 @@ O Heroku foi utilizado como provedor web para o deploy da aplicação. Desta for
 ​
 Algumas rotas da API foram protegidas com autenticação básica.
 Para criar um usuário e acessar as APIs restritas a clientes, acesse, pelo Swagger, o método POST do endpoint "/clients" e insira as informações solicitadas. Em seguida, faça login no botão "Authorize", utilizando o e-mail e a senha criados.
-
-## Linguagens, dependencias e libs utilizadas 📚
-
-* [motor](https://motor.readthedocs.io/en/stable/) 
-
-* [pydantic](https://pydantic-docs.helpmanual.io/)
-
-* [pymongo](https://pymongo.readthedocs.io/en/stable/)
-
-* [uvicorn](https://www.uvicorn.org/)
-
-* [fastapi](https://fastapi.tiangolo.com/)
-
 
 
 ## Desenvolvedoras :octocat:
