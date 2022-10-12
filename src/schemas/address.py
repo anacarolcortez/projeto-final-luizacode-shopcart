@@ -33,7 +33,7 @@ class AdressComplementSchema(BaseModel):
         json_encoders = {ObjectId: str}
         schema_extra = {
             "example": {
-                "street_number": "1000",
+                "street_number": 1000,
                 "complement": "Basement",
             }
         }

@@ -83,7 +83,7 @@ async def closing_shopcart(email: str=Depends(validate_credentials)):
 
 
 @router.delete("/{email}/{code}", tags=["shopcarts"])
-async def remove_item_from_cart(code: str, product_quantity: UpdateShopcartSchema, 
+async def remove_item_quantity_from_cart(code: str, product_quantity: UpdateShopcartSchema, 
                                 email: str=Depends(validate_credentials)):
     try:
         return await update_cart_delete_item(
