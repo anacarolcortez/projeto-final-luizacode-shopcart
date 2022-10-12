@@ -104,8 +104,8 @@ O Heroku foi utilizado como provedor web para o deploy da aplicação. Desta for
 Algumas rotas da API foram protegidas com autenticação básica.
 Para criar um usuário e acessar as APIs restritas a clientes, acesse, pelo Swagger, o método POST do endpoint "/clients" e insira as informações solicitadas. Em seguida, faça login no botão "Authorize", utilizando o e-mail e a senha criados.
 
-## Linguagens, dependencias e libs utilizadas :books:
-​
+## Linguagens, dependencias e libs utilizadas 📚
+
 * [motor](https://motor.readthedocs.io/en/stable/) 
 
 * [pydantic](https://pydantic-docs.helpmanual.io/)
@@ -127,4 +127,4 @@ Time responsável pelo desenvolvimento do projeto
 | [<sub>Linkedin</sub>](https://www.linkedin.com/in/aline-cristina-garcia-de-freitas-720161181/) | [<sub>Linkedin</sub>](https://www.linkedin.com/in/ana-c-447047192/) | [<sub>Linkedin</sub>](https://www.linkedin.com/in/la%C3%ADs-rodrigues-70a18b14a/) | [<sub>Linkedin</sub>](https://www.linkedin.com/in/liliancandido/) | [<sub>Linkedin</sub>](https://www.linkedin.com/in/mayara-pereira-barbosa-b98a0163/) |
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
-Copyright :copyright: 2022 - Projeto Final Shopping Cart Magalu
+Copyright :copyright: 2022 - Projeto Final Shopping Cart Luiza < code > Magalu
