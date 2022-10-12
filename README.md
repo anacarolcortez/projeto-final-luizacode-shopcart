@@ -94,7 +94,7 @@ Acesse a Wiki do projeto para obter mais informações sobre as funcionalidades 
      ```
 ### Execução
   ```
-  $ python main.py
+  $ uvicorn.run("main:app", port=8000, reload=True, access_log=False)
    ```
 ## Deploy :cloud:
 
