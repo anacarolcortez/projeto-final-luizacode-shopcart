@@ -77,14 +77,14 @@
 
 O Heroku foi utilizado como provedor web para o deploy da aplicação. Desta forma, é possível conferir e testar as rotas criadas por meio do OpenAPI (Swagger) diretamente no link:
 
-[https://luizacode5-shoppingcart.herokuapp.com/docs#/](https://luizacode5-shoppingcart.herokuapp.com/docs#/)
+[https://luizacode5-shoppingcart.herokuapp.com/docs](https://luizacode5-shoppingcart.herokuapp.com/docs#/)
 
 ## Segurança :lock:
 
 Algumas rotas da API foram protegidas com autenticação básica.
-Para criar um usuário e acessar as APIs restritas a clientes, acesse, pelo Swagger, o endpoint POST do endpoint "/clients" e insira as informações solicitadas. Em seguida, faça login no botão "Authorize", utilizando o e-mail e a senha criados.
+Para criar um usuário e acessar as APIs restritas a clientes, acesse, pelo Swagger, o método POST do endpoint "/clients" e insira as informações solicitadas. Em seguida, faça login no botão "Authorize", utilizando o e-mail e a senha criados.
 
-## Linguagens, dependencias e libs utilizadas :books:
+## Documentação das principais libs utilizadas :books:
 
 - [motor](https://motor.readthedocs.io/en/stable/) 
 - [pydantic](https://pydantic-docs.helpmanual.io/)
@@ -93,10 +93,9 @@ Para criar um usuário e acessar as APIs restritas a clientes, acesse, pelo Swag
 - [fastapi](https://fastapi.tiangolo.com/)
 - [pytest](https://docs.pytest.org/en/7.1.x/)
 
-
 ## Tarefas desenvolvidas
 
-Acesse a Wiki do projeto para detalhamento das features do projeto:
+Acesse a Wiki do projeto para detalhamento das features criadas:
 
 [Wiki do Projeto](https://bit.ly/3Vp6Lw7)
 
