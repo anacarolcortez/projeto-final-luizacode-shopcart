@@ -1,4 +1,4 @@
-<h1>PROJETO FINAL BACKEND CARRINHO DE COMPRAS </h1> 
+<h1>PROJETO FINAL LUIZA < CODE > 5ª EDIÇÃO CARRINHO DE COMPRAS </h1> 
 ​
 <p align="center">
   <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54"/>
@@ -31,7 +31,7 @@
   Desenvolvimento de APIs Rest em Python de um carrinho de compras, utilizando o framework FastAPI e MongoDB para banco de dados. Para disponibilizar a aplicação utilizamos servidor Uvicorn e Heroku.
 </p>
 
-## Funcionalidades
+## Funcionalidades :snake:
 
 :heavy_check_mark: Cadastro de clientes 
 
@@ -46,9 +46,9 @@
 
 ### Detalhamento das features :scroll:
 ​
-Acesse a Wiki do projeto para obter mais informações sobre as funcionalidades criadas:
+Acesse a Wiki do projeto para obter mais informações sobre as funcionalidades criadas: 
 ​
-[Wiki do Projeto](https://bit.ly/3Vp6Lw7)
+ [ Wiki do Projeto](https://bit.ly/3Vp6Lw7)
 
 
 ## Pré-requisitos
@@ -96,7 +96,7 @@ Acesse a Wiki do projeto para obter mais informações sobre as funcionalidades 
 
 O Heroku foi utilizado como provedor web para o deploy da aplicação. Desta forma, é possível conferir e testar as rotas criadas por meio do OpenAPI (Swagger) diretamente no link:
 ​
-[https://luizacode5-shoppingcart.herokuapp.com/docs](https://luizacode5-shoppingcart.herokuapp.com/docs#/)
+[ https://luizacode5-shoppingcart.herokuapp.com/docs](https://luizacode5-shoppingcart.herokuapp.com/docs#/)
 
 
 ## Segurança :lock:
@@ -106,15 +106,15 @@ Para criar um usuário e acessar as APIs restritas a clientes, acesse, pelo Swag
 
 ## Linguagens, dependencias e libs utilizadas :books:
 ​
-*[motor](https://motor.readthedocs.io/en/stable/) 
+* [motor](https://motor.readthedocs.io/en/stable/) 
 
-*[pydantic](https://pydantic-docs.helpmanual.io/)
+* [pydantic](https://pydantic-docs.helpmanual.io/)
 
-*[pymongo](https://pymongo.readthedocs.io/en/stable/)
+* [pymongo](https://pymongo.readthedocs.io/en/stable/)
 
-*[uvicorn](https://www.uvicorn.org/)
+* [uvicorn](https://www.uvicorn.org/)
 
-*[fastapi](https://fastapi.tiangolo.com/)
+* [fastapi](https://fastapi.tiangolo.com/)
 
 
 
@@ -126,5 +126,5 @@ Time responsável pelo desenvolvimento do projeto
 | :---: | :---: | :---: | :---: | :---: |
 | [<sub>Linkedin</sub>](https://www.linkedin.com/in/aline-cristina-garcia-de-freitas-720161181/) | [<sub>Linkedin</sub>](https://www.linkedin.com/in/ana-c-447047192/) | [<sub>Linkedin</sub>](https://www.linkedin.com/in/la%C3%ADs-rodrigues-70a18b14a/) | [<sub>Linkedin</sub>](https://www.linkedin.com/in/liliancandido/) | [<sub>Linkedin</sub>](https://www.linkedin.com/in/mayara-pereira-barbosa-b98a0163/) |
 
-
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Copyright :copyright: 2022 - Projeto Final Shopping Cart Magalu
