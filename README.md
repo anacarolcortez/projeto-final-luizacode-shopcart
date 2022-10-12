@@ -13,11 +13,17 @@
 
 :small_blue_diamond: [Descrição do projeto](#descrição-do-projeto)
 
-:small_blue_diamond: [Funcionalidades](#funcionalidades)
+:small_blue_diamond: [Funcionalidades](#funcionalidades-snake)
 
 :small_blue_diamond: [Pré-requisitos](#pré-requisitos)
 
 :small_blue_diamond: [Como rodar a aplicação](#como-rodar-a-aplicação-arrow_forward)
+
+:small_blue_diamond: [Deploy](#deploy-cloud)
+
+:small_blue_diamond: [Segurança](#segurança-lock)
+
+:small_blue_diamond: [Equipe](#desenvolvedoras-octocat)
  
 
 ## Descrição do projeto 
@@ -27,13 +33,21 @@
   Framework FastAPI e MongoDB para banco de dados. Servidor com Uvicorn.
 </p>
 
-## Funcionalidades
+## Funcionalidades :snake:
 
 :heavy_check_mark: Cadastro de clientes 
 
 :heavy_check_mark: Gerenciamento de produtos  
 
 :heavy_check_mark: Carrinho de compras  
+
+
+### Detalhamento das features 
+
+Acesse a Wiki do projeto para obter mais informações sobre as funcionalidades criadas:
+
+[Wiki do Projeto](https://bit.ly/3Vp6Lw7)
+
 
 
 ## Pré-requisitos
@@ -47,12 +61,12 @@
 
 ## Como rodar a aplicação :arrow_forward:
 
-## Variável de ambiente:
+### Variável de ambiente:
 | name_env | value |
 |------------|------------|
 |DATABASE_URI|connection string Atlas|
 
-## Instalação
+### Instalação
 * Create venv
     ```
     $ virtualenv venv --python=3.10
@@ -69,20 +83,23 @@
      ```
      $ pip install -r requirements.txt
      ```
-## Execução local
+### Execução local
   ```
   $ uvicorn.run("main:app", port=8000, reload=True, access_log=False)
    ```
+
 ## Deploy :cloud:
 
 O Heroku foi utilizado como provedor web para o deploy da aplicação. Desta forma, é possível conferir e testar as rotas criadas por meio do OpenAPI (Swagger) diretamente no link:
 
 [https://luizacode5-shoppingcart.herokuapp.com/docs](https://luizacode5-shoppingcart.herokuapp.com/docs#/)
 
+
 ## Segurança :lock:
 
 Algumas rotas da API foram protegidas com autenticação básica.
 Para criar um usuário e acessar as APIs restritas a clientes, acesse, pelo Swagger, o método POST do endpoint "/clients" e insira as informações solicitadas. Em seguida, faça login no botão "Authorize", utilizando o e-mail e a senha criados.
+
 
 ## Documentação das principais libs utilizadas :books:
 
@@ -91,13 +108,6 @@ Para criar um usuário e acessar as APIs restritas a clientes, acesse, pelo Swag
 - [pymongo](https://pymongo.readthedocs.io/en/stable/)
 - [uvicorn](https://www.uvicorn.org/)
 - [fastapi](https://fastapi.tiangolo.com/)
-- [pytest](https://docs.pytest.org/en/7.1.x/)
-
-## Tarefas desenvolvidas
-
-Acesse a Wiki do projeto para detalhamento das features criadas:
-
-[Wiki do Projeto](https://bit.ly/3Vp6Lw7)
 
 
 ## Desenvolvedoras :octocat:
@@ -109,4 +119,5 @@ Time responsável pelo desenvolvimento do projeto
 
 
 
+-------------------------------------------------------
 Copyright :copyright: 2022 - Projeto Final Shopping Cart Magalu
