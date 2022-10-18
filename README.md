@@ -48,7 +48,7 @@
 ​
 Acesse a Wiki do projeto para obter mais informações sobre as funcionalidades criadas: 
 ​
- [ Wiki do Projeto](https://bit.ly/3Vp6Lw7)
+ [ Wiki do Projeto](https://github.com/anacarolcortez/projeto-final-luizacode-shopcart/wiki)
 
 
 ## Pré-requisitos
