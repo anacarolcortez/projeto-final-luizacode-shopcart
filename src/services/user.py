@@ -3,8 +3,11 @@ from bson import ObjectId
 from bson import json_util
 import json
 
-async def insert_one_user(users_collection, user):
-    already_exists = await get_user_by_email(users_collection, user.email)
+from server.database import db
+users_collection = db.users_collection
+
+async def insert_one_user(user):
+    already_exists = await get_user_by_email(user.email)
     if already_exists:
         raise Exception("Usuário já cadastrado no sistema")
     else:
@@ -14,7 +17,7 @@ async def insert_one_user(users_collection, user):
     return False
 
 
-async def get_user(users_collection, user_id):
+async def get_user(user_id):
     try:
         user = await users_collection.find_one({'_id': ObjectId(user_id)})
         if user:
@@ -23,7 +26,7 @@ async def get_user(users_collection, user_id):
         return f'get_user.error: {e}'
         
 
-async def get_user_by_email(users_collection, email):
+async def get_user_by_email(email):
     try:
         user = await users_collection.find_one({'email': email})
         if user:

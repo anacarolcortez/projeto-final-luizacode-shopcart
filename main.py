@@ -1,4 +1,4 @@
-import uvicorn
+# import uvicorn
 from fastapi import FastAPI
 from src.controllers import address, clients, delivery, shopcarts, stocks, products
 
