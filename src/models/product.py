@@ -7,25 +7,25 @@ from src.services.product import (
     get_products_list, delete_product_by_code, update_product_info
 )
 
-async def create_product(products_collection, product):
+async def create_product(product):
     try:
-        already_exists = await find_one_product_by_code(products_collection, product.code)
+        already_exists = await find_one_product_by_code(product.code)
         if already_exists is not None:
             raise Exception("Um produto com este código já está cadastrado no sistema")
         else:
             product_data = jsonable_encoder(product)
             is_over_one_cent = await validate_product_price(product_data["price"])
             if is_over_one_cent:
-                return await insert_new_product(products_collection, product_data)
+                return await insert_new_product(product_data)
             else:
                 raise Exception("Informe um preço maior que R$ 0.01")
     except Exception as e:
         return f'create_product.error: {e}'
 
 
-async def get_product_by_code(products_collection, code):
+async def get_product_by_code(code):
     try:
-        product_code = await find_one_product_by_code(products_collection, code)
+        product_code = await find_one_product_by_code(code)
         if product_code is not None:
             return json.loads(json_util.dumps(product_code))
         else:
@@ -34,9 +34,9 @@ async def get_product_by_code(products_collection, code):
         return f'get_product_by_code.error: {e}'  
     
     
-async def get_product_by_name(products_collection, name):
+async def get_product_by_name(name):
     try:
-        product_name = await find_one_product_by_name(products_collection, name)
+        product_name = await find_one_product_by_name(name)
         if product_name is not None:
             return json.loads(json_util.dumps(product_name))
         else:
@@ -46,29 +46,29 @@ async def get_product_by_name(products_collection, name):
 
 
         
-async def get_all_products(products_collection, skip, limit):
+async def get_all_products(skip, limit):
     try:
-        return await get_products_list(products_collection, skip, limit)
+        return await get_products_list(skip, limit)
     except Exception as e:
         return f'get_all_products.error: {e}'
     
     
 
-async def update_product(products_collection, code, update_product):
+async def update_product(code, update_product):
     try:
         product_data = jsonable_encoder(update_product)
         is_over_one_cent = await validate_product_price(product_data["price"])
         if is_over_one_cent:
-            return await update_product_info(products_collection, code, product_data)
+            return await update_product_info(code, product_data)
         else:
             raise Exception("Informe um preço maior que R$ 0.01")
     except Exception as e:
         return f'update_product.error: {e}'
 
 
-async def delete_product(products_collection, code):
+async def delete_product(code):
     try:
-        return await delete_product_by_code(products_collection, code)
+        return await delete_product_by_code(code)
     except Exception as e:
         return f'delete_product.error: {e}'
     

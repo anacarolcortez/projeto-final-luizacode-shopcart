@@ -2,8 +2,10 @@ from fastapi.encoders import jsonable_encoder
 from bson import json_util
 import json
 
+from server.database import db
+delivery_collection = db.delivery_collection
 
-async def get_user_delivery_address(delivery_collection, email):
+async def get_user_delivery_address(email):
     delivery_address = await delivery_collection.find_one({'client.email': email})
     if delivery_address:
         return json.loads(json_util.dumps(delivery_address))
@@ -11,7 +13,7 @@ async def get_user_delivery_address(delivery_collection, email):
         return None
     
 
-async def create_delivery_data(delivery_collection, client, address, add_compl):
+async def create_delivery_data(client, address, add_compl):
     address_payload = {
         "address": address,
         "complement": jsonable_encoder(add_compl)
@@ -24,12 +26,12 @@ async def create_delivery_data(delivery_collection, client, address, add_compl):
         }
     )
     if delivery.inserted_id:
-        return await get_user_delivery_address(delivery_collection, client['email'])
+        return await get_user_delivery_address(client['email'])
     else:
         raise Exception("Erro ao associar endereço para este usuário")
 
 
-async def upsert_client_address(delivery_collection, email, address, add_compl):
+async def upsert_client_address(email, address, add_compl):
     address_payload = {
         "address": address,
         "complement": jsonable_encoder(add_compl)
@@ -44,7 +46,7 @@ async def upsert_client_address(delivery_collection, email, address, add_compl):
         }
     )
     if data.modified_count:
-        response = await get_user_delivery_address(delivery_collection, email)
+        response = await get_user_delivery_address(email)
         return json.loads(json_util.dumps(response))
     else:
         raise Exception("Usuário já possui este endereço cadastrado")

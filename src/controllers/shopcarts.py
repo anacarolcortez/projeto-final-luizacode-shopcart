@@ -9,20 +9,12 @@ from src.server.database import db
 
 
 router = APIRouter(prefix="/shopcarts")
-shopcarts_collection = db.shopcarts_collection
-clients_collection = db.clients_collection
-products_collection = db.products_collection
-stocks_collection = db.stocks_collection
 
 
 @router.post("/{email}/{code}", tags=["shopcarts"])
 async def post_shopcart(code: str, product_quantity: UpdateShopcartSchema, email: str=Depends(validate_credentials)):
     try:
         return await create_shopcart(
-            shopcarts_collection,
-            clients_collection,
-            products_collection,
-            stocks_collection,
             email,
             code,
             product_quantity
@@ -35,10 +27,6 @@ async def post_shopcart(code: str, product_quantity: UpdateShopcartSchema, email
 async def patch_shopcart(code: str, product_quantity: UpdateShopcartSchema, email: str=Depends(validate_credentials)):
     try:
         return await update_cart(
-            shopcarts_collection,
-            clients_collection,
-            products_collection,
-            stocks_collection,
             email,
             code,
             product_quantity
@@ -51,7 +39,6 @@ async def patch_shopcart(code: str, product_quantity: UpdateShopcartSchema, emai
 async def get_shopcart_open(email: str=Depends(validate_credentials)):
     try:
         return await get_opened_cart(
-            shopcarts_collection,
             email
         )
     except Exception as e:
@@ -62,7 +49,6 @@ async def get_shopcart_open(email: str=Depends(validate_credentials)):
 async def get_shopcart_close(skip=0, limit=10, email: str=Depends(validate_credentials)):
     try:
         return await get_closed_cart(
-            shopcarts_collection,
             email,
             skip,
             limit
@@ -75,7 +61,6 @@ async def get_shopcart_close(skip=0, limit=10, email: str=Depends(validate_crede
 async def closing_shopcart(email: str=Depends(validate_credentials)):
     try:
         return await put_closed_shopcart(
-            shopcarts_collection,
             email
         )
     except Exception as e:
@@ -87,10 +72,6 @@ async def remove_item_quantity_from_cart(code: str, product_quantity: UpdateShop
                                 email: str=Depends(validate_credentials)):
     try:
         return await update_cart_delete_item(
-            shopcarts_collection, 
-            clients_collection, 
-            products_collection, 
-            stocks_collection, 
             email, 
             code, 
             product_quantity
